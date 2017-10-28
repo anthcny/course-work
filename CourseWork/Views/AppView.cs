@@ -30,15 +30,27 @@ namespace CourseWork.Views
             };
             this.Disposed += (sender, args) => db.Dispose();
 
-            this.tabControlAirplanes.Selected +=  async (s, a) =>  await ShowAirplanesDataGrid();
+            this.tabControlAirplanes.Selected += async (sender, args) =>
+            {
+                if (this.tabAirplane == args.TabPage)
+                    await ShowAirplanesDataGrid();
+                else if (this.tabCargos == args.TabPage)
+                    await ShowCargosDataGrid();
+                else if (this.tabAirports == args.TabPage)
+                    await ShowAirportsDataGrid();
+                else if (this.tabTraffic == args.TabPage)
+                    await ShowTraffic();
+            };
         }
 
-        AirplaneService airplaneService { get { return AirplaneService.Get(); } }
+        //AirplaneService airplaneService { get { return AirplaneService.Get(); } } 
 
-        
+        //--------------------------------------------
+        //------           AIRPLANES           -----
+        //--------------------------------------------
 
         private async Task ShowAirplanesDataGrid()
-        {           
+        {
             await db.Airplanes.LoadAsync();
 
             dataGridAirplanes.DataSource = db.Airplanes.Local.ToBindingList();
@@ -146,7 +158,7 @@ namespace CourseWork.Views
             {
                 MainFormService.ShowError(ex.Message);
             }
-            
+
         }
 
         void ShowInfo(string text = "")
@@ -180,6 +192,352 @@ namespace CourseWork.Views
             DeleteAirplaneData();
         }
 
-       
+        private void textBoxMaxDistance_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && number != 8) //цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBoxCarrying_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && number != 8) //цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        //--------------------------------------------
+        //------             CARGOS              -----
+        //--------------------------------------------
+
+        private async Task ShowCargosDataGrid()
+        {
+            await db.Cargoes.LoadAsync();
+            dataGridaCargos.DataSource = db.Cargoes.Local.ToBindingList();
+        }
+
+        void ShowInfoCargo(string text = "")
+        {
+            labelCargoInfo.Text = text;
+        }
+
+        void ClearFieldsInputCargo()
+        {
+            textBoxNameCargo.Clear();
+            textBoxQuantityCargo.Clear();
+            textBoxWeightCargo.Clear();
+        }
+
+        Cargo GetSelectedCargo()
+        {
+            if (dataGridaCargos.SelectedRows.Count == 0)
+                return null;
+            return dataGridaCargos.SelectedRows[0].DataBoundItem as Cargo;
+        }
+
+        private void DeleteCargoData()
+        {
+            try
+            {
+                var cargo = GetSelectedCargo();
+                if (cargo == null)
+                    return;
+
+                db.Cargoes.Remove(cargo);
+                db.SaveChanges();
+                ShowInfoCargo("Объект удален!");
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void AddCargoData()
+        {
+            try
+            {
+                if (textBoxNameCargo.Text != "" && textBoxWeightCargo.Text != "" && textBoxQuantityCargo.Text != "")
+                {
+                    Cargo cargo = new Cargo
+                    {
+                        Name = textBoxNameCargo.Text,
+                        Weight = Single.Parse(textBoxWeightCargo.Text),
+                        Quantity = Int32.Parse(textBoxQuantityCargo.Text)
+                    };
+
+                    db.Cargoes.Add(cargo);
+                    db.SaveChanges();
+                    dataGridAirplanes.Refresh();
+                    ClearFieldsInputCargo();
+                    ShowInfoCargo("Новый объект добавлен!");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void ChangeCargoData()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxNameCargo.Text)
+                    && string.IsNullOrEmpty(textBoxWeightCargo.Text)
+                    && string.IsNullOrEmpty(textBoxQuantityCargo.Text))
+                    return;
+
+                var cargo = GetSelectedCargo();
+
+                if (cargo == null)
+                    return;
+
+                var newCargo = new Cargo();
+
+                if (!string.IsNullOrEmpty(textBoxNameCargo.Text))
+                    newCargo.Name = textBoxNameCargo.Text;
+                else
+                    newCargo.Name = cargo.Name;
+
+                if (!string.IsNullOrEmpty(textBoxWeightCargo.Text))
+                    newCargo.Weight = Single.Parse(textBoxWeightCargo.Text);
+                else
+                    newCargo.Weight = cargo.Weight;
+
+                if (!string.IsNullOrEmpty(textBoxQuantityCargo.Text))
+                    newCargo.Quantity = Int32.Parse(textBoxQuantityCargo.Text);
+                else
+                    newCargo.Quantity = cargo.Quantity;
+
+                if (cargo.Equals(newCargo))
+                    return;
+
+                cargo.Name = newCargo.Name;
+                cargo.Weight = newCargo.Weight;
+                cargo.Quantity = newCargo.Quantity;
+
+                ClearFieldsInput();
+
+                db.Entry(cargo).State = EntityState.Modified;
+                db.SaveChanges();
+                dataGridaCargos.Refresh();
+                ShowInfoCargo("Объект изменен!");
+                ClearFieldsInputCargo();
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void btnAddCargo_Click(object sender, EventArgs e)
+        {
+            ShowInfoCargo();
+            AddCargoData();
+        }
+
+        private void btnChangeCargo_Click(object sender, EventArgs e)
+        {
+            ShowInfoCargo();
+            ChangeCargoData();
+        }
+
+        private void btnDeleteCargo_Click(object sender, EventArgs e)
+        {
+            ShowInfoCargo();
+            DeleteCargoData();
+        }
+
+        private void textBoxWeightCargo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && number != 8 && number != 44) //цифры, клавиша BackSpace и запятая а ASCII
+            {
+                e.Handled = true;
+            }
+
+        }
+
+        private void textBoxQuantityCargo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && number != 8) //цифры, клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+
+        //--------------------------------------------
+        //------          AIRPORTS             -----
+        //--------------------------------------------
+        private async Task ShowAirportsDataGrid()
+        {
+            await db.Airports.LoadAsync();
+            dataGridAirports.DataSource = db.Airports.Local.ToBindingList();
+        }
+
+        void ShowInfoAirport(string text = "")
+        {
+            labelAirportInfo.Text = text;
+        }
+
+        void ClearFieldsInputAirport()
+        {
+            textBoxCityAirport.Clear();
+        }
+
+        Airport GetSelectedAirport()
+        {
+            if (dataGridAirports.SelectedRows.Count == 0)
+                return null;
+            return dataGridAirports.SelectedRows[0].DataBoundItem as Airport;
+        }
+
+        private void DeleteAirportData()
+        {
+            try
+            {
+                var airport = GetSelectedAirport();
+                if (airport == null)
+                    return;
+
+                db.Airports.Remove(airport);
+                db.SaveChanges();
+                ShowInfoAirport("Объект удален!");
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void AddAirportData()
+        {
+            try
+            {
+                if (textBoxCityAirport.Text != "")
+                {
+                    Airport airport = new Airport
+                    {
+                        City = textBoxCityAirport.Text
+                    };
+
+                    db.Airports.Add(airport);
+                    db.SaveChanges();
+                    dataGridAirports.Refresh();
+                    ClearFieldsInputAirport();
+                    ShowInfoAirport("Новый объект добавлен!");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void ChangeAirportData()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxCityAirport.Text))
+                    return;
+
+                var airport = GetSelectedAirport();
+
+                if (airport == null)
+                    return;
+
+                var newAirport = new Airport();
+
+                if (!string.IsNullOrEmpty(textBoxCityAirport.Text))
+                    newAirport.City = textBoxCityAirport.Text;
+                else
+                    newAirport.City = airport.City;
+
+                
+
+                if (airport.Equals(newAirport))
+                    return;
+
+                airport.City = newAirport.City;
+
+                ClearFieldsInputAirport();
+
+                db.Entry(airport).State = EntityState.Modified;
+                db.SaveChanges();
+                dataGridAirports.Refresh();
+                ShowInfoAirport("Объект изменен!");
+                ClearFieldsInputAirport();
+            }
+            catch (Exception ex)
+            {
+                MainFormService.ShowError(ex.Message);
+            }
+        }
+
+        private void btnAddAirport_Click(object sender, EventArgs e)
+        {
+            ShowInfoAirport();
+            AddAirportData();
+        }
+
+        private void btnChangeAirport_Click(object sender, EventArgs e)
+        {
+            ShowInfoAirport();
+            ChangeAirportData();
+        }
+
+        private void btnDeleteAirport_Click(object sender, EventArgs e)
+        {
+            ShowInfoAirport();
+            DeleteAirportData();
+        }
+
+        //--------------------------------------------
+        //------          TRAFFICS             -----
+        //--------------------------------------------
+
+        
+        async Task ShowTraffic()
+        {
+            await UpdateTrafficTree();
+
+        }
+
+        async Task UpdateTrafficTree()
+        {
+            var traffics = await db.Traffics
+                .Include(t => t.Cargos)
+                .ToListAsync();
+
+            this.trafficTree.Nodes.Clear();
+
+            traffics.ForEach(async traffic =>
+            {
+                var from = await db.Airports.FirstOrDefaultAsync(a => a.Id == traffic.IdAirportFrom);
+                var to = await db.Airports.FirstOrDefaultAsync(a => a.Id == traffic.IdAirportTo);
+                var airplane = await db.Airplanes.FirstOrDefaultAsync(a => a.Id == traffic.IdAirplane);
+                var listCargos = traffic.Cargos.Select(c => c.Quantity * c.Weight).ToList();
+                float sumCargos = 0;
+                listCargos.ForEach(c => sumCargos += c);
+                var node = new TreeNode($"{from.City} -> {to}, Самолет {airplane.Name}, Груз  {sumCargos} (кг)")
+                {
+                    Tag = traffic
+                };
+                var childNodes = traffic.Cargos.Select(carg => 
+                    new TreeNode($"{carg.Name} - {carg.Quantity} шт. ({carg.Quantity * carg.Weight} кг)") {
+                        Tag = carg
+                    }).ToArray();
+                node.Nodes.AddRange(childNodes);
+            });
+        }
     }
 }

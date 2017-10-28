@@ -17,5 +17,15 @@ namespace CourseWork.Dal
         [Required]
         public string City { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var that = obj as Airport;
+            if (that == null)
+                return base.Equals(obj);
+
+            return City == that.City;
+        }
+
+        
     }
 }

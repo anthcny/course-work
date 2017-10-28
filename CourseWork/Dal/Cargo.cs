@@ -29,5 +29,19 @@ namespace CourseWork.Dal
 
         public int? TrafficId { get; set; }
         public Traffic Traffic { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            var that = obj as Cargo;
+            if (that == null)
+                return base.Equals(obj);
+
+            return Name == that.Name
+                && Weight == that.Weight
+                && Quantity == that.Quantity;
+        }
+
+       
     }
 }

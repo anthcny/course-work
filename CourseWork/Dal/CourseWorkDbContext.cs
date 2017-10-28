@@ -17,6 +17,8 @@ namespace CourseWork.Dal //Data Access Layer
 
         public DbSet<Traffic> Traffics { get; set; }
 
+        public DbSet<Cargo> Cargoes { get; set; }
+
         public CourseWorkDbContext(): base("DefaultConnection")
         {
         }
