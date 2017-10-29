@@ -21,7 +21,8 @@ namespace CourseWork.Views
         {
             InitializeComponent();
 
-            this.db = new CourseWorkDbContext();
+            //this.db = new CourseWorkDbContext();
+            db = MainFormService.Db;
             this.loginName.Text = MainFormService.AppUser.Login;
             this.btnLogout.Click += (sender, e) =>
             {
@@ -30,17 +31,25 @@ namespace CourseWork.Views
             };
             this.Disposed += (sender, args) => db.Dispose();
 
-            this.tabControlAirplanes.Selected += async (sender, args) =>
+            this.tabControlAirplanes.Selected += async (sender, args) => await ShowTab(args.TabPage);
+            this.btnDeleteTraffic.Click += async (s, a) => await DeleteTraffic();
+
+            this.Load += async (s, a) =>
             {
-                if (this.tabAirplane == args.TabPage)
-                    await ShowAirplanesDataGrid();
-                else if (this.tabCargos == args.TabPage)
-                    await ShowCargosDataGrid();
-                else if (this.tabAirports == args.TabPage)
-                    await ShowAirportsDataGrid();
-                else if (this.tabTraffic == args.TabPage)
-                    await ShowTraffic();
+                await ShowTab(this.tabControlAirplanes.SelectedTab);
             };
+        }
+
+        async Task ShowTab(TabPage tab)
+        {
+            if (this.tabAirplane == tab)
+                await ShowAirplanesDataGrid();
+            else if (this.tabCargos == tab)
+                await ShowCargosDataGrid();
+            else if (this.tabAirports == tab)
+                await ShowAirportsDataGrid();
+            else if (this.tabTraffic == tab)
+                await ShowTraffic();
         }
 
         //AirplaneService airplaneService { get { return AirplaneService.Get(); } } 
@@ -520,11 +529,11 @@ namespace CourseWork.Views
 
             this.trafficTree.Nodes.Clear();
 
-            traffics.ForEach(async traffic =>
+            traffics.ForEach(traffic =>
             {
-                var from = await db.Airports.FirstOrDefaultAsync(a => a.Id == traffic.IdAirportFrom);
-                var to = await db.Airports.FirstOrDefaultAsync(a => a.Id == traffic.IdAirportTo);
-                var airplane = await db.Airplanes.FirstOrDefaultAsync(a => a.Id == traffic.IdAirplane);
+                var from = db.Airports.FirstOrDefault(a => a.Id == traffic.IdAirportFrom);
+                var to = db.Airports.FirstOrDefault(a => a.Id == traffic.IdAirportTo);
+                var airplane = db.Airplanes.FirstOrDefault(a => a.Id == traffic.IdAirplane);
                 var listCargos = traffic.Cargos.Select(c => c.Quantity * c.Weight).ToList();
                 float sumCargos = 0;
                 listCargos.ForEach(c => sumCargos += c);
@@ -537,7 +546,31 @@ namespace CourseWork.Views
                         Tag = carg
                     }).ToArray();
                 node.Nodes.AddRange(childNodes);
+                this.trafficTree.Nodes.Add(node);
             });
+        }
+
+        private void btnAddTraffic_Click(object sender, EventArgs e)
+        {
+            TrafficAddForm formTAdd = new TrafficAddForm();
+            formTAdd.Show();
+            formTAdd.FormClosed += async (s, a) => await this.UpdateTrafficTree();
+        }
+
+        private async Task DeleteTraffic()
+        {
+            var selected = this.trafficTree.SelectedNode;
+            if (selected == null)
+                return;
+            var traffic = selected.Tag as Traffic;
+            if (traffic == null)
+                return;
+
+            var trafficDb = db.Traffics.FirstOrDefault(t => t.Id == traffic.Id);
+            db.Traffics.Remove(trafficDb);
+            db.SaveChanges();
+
+            await UpdateTrafficTree();
         }
     }
 }

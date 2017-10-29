@@ -33,5 +33,10 @@ namespace CourseWork.Dal
                 && MaxDistance == that.MaxDistance
                 && Carrying == that.Carrying;
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0} (макс. груз: {1} кг.)", Name , Carrying);
+        }
     }
 }

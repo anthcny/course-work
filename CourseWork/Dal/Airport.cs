@@ -26,6 +26,9 @@ namespace CourseWork.Dal
             return City == that.City;
         }
 
-        
+        public override string ToString()
+        {
+            return City;
+        }
     }
 }

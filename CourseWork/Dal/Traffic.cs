@@ -14,7 +14,7 @@ namespace CourseWork.Dal
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public ICollection<Cargo> Cargos { get; set; }
+        public ICollection<Cargo> Cargos { get; set; } = new List<Cargo>();
 
         public int IdAirportFrom { get; set; }
         public int IdAirportTo { get; set; }

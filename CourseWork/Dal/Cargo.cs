@@ -27,8 +27,7 @@ namespace CourseWork.Dal
         /// </summary>
         public int Quantity { get; set; }
 
-        public int? TrafficId { get; set; }
-        public Traffic Traffic { get; set; }
+        public ICollection<Traffic> Traffics { get; set; } = new List<Traffic>();
 
 
         public override bool Equals(object obj)
@@ -42,6 +41,10 @@ namespace CourseWork.Dal
                 && Quantity == that.Quantity;
         }
 
-       
+        public override string ToString()
+        {
+            float q = Weight * Quantity;
+            return String.Format("{0} - {1} шт. Общий вес: {2} кг.", Name, Quantity, q);
+        }
     }
 }

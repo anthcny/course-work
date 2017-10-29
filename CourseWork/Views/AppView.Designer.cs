@@ -33,7 +33,22 @@
             this.btnLogout = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControlAirplanes = new System.Windows.Forms.TabControl();
+            this.tabTraffic = new System.Windows.Forms.TabPage();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.trafficTree = new System.Windows.Forms.TreeView();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.btnAddTraffic = new System.Windows.Forms.Button();
             this.tabAirports = new System.Windows.Forms.TabPage();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.dataGridAirports = new System.Windows.Forms.DataGridView();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.labelAirportInfo = new System.Windows.Forms.Label();
+            this.btnDeleteAirport = new System.Windows.Forms.Button();
+            this.btnChangeAirport = new System.Windows.Forms.Button();
+            this.btnAddAirport = new System.Windows.Forms.Button();
+            this.textBoxCityAirport = new System.Windows.Forms.TextBox();
+            this.labelCityAirport = new System.Windows.Forms.Label();
             this.tabAirplane = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dataGridAirplanes = new System.Windows.Forms.DataGridView();
@@ -62,24 +77,18 @@
             this.labelWeightCargo = new System.Windows.Forms.Label();
             this.textBoxNameCargo = new System.Windows.Forms.TextBox();
             this.labelNameCargo = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.dataGridAirports = new System.Windows.Forms.DataGridView();
-            this.labelCityAirport = new System.Windows.Forms.Label();
-            this.textBoxCityAirport = new System.Windows.Forms.TextBox();
-            this.btnAddAirport = new System.Windows.Forms.Button();
-            this.btnChangeAirport = new System.Windows.Forms.Button();
-            this.btnDeleteAirport = new System.Windows.Forms.Button();
-            this.labelAirportInfo = new System.Windows.Forms.Label();
-            this.tabTraffic = new System.Windows.Forms.TabPage();
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.trafficTree = new System.Windows.Forms.TreeView();
+            this.btnDeleteTraffic = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
+            this.tabTraffic.SuspendLayout();
+            this.panel9.SuspendLayout();
+            this.panel11.SuspendLayout();
+            this.panel10.SuspendLayout();
             this.tabAirports.SuspendLayout();
+            this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridAirports)).BeginInit();
+            this.panel7.SuspendLayout();
             this.tabAirplane.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAirplanes)).BeginInit();
@@ -88,12 +97,6 @@
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridaCargos)).BeginInit();
             this.panel5.SuspendLayout();
-            this.panel7.SuspendLayout();
-            this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridAirports)).BeginInit();
-            this.tabTraffic.SuspendLayout();
-            this.panel9.SuspendLayout();
-            this.panel11.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginName
@@ -148,6 +151,64 @@
             this.tabControlAirplanes.Size = new System.Drawing.Size(713, 473);
             this.tabControlAirplanes.TabIndex = 0;
             // 
+            // tabTraffic
+            // 
+            this.tabTraffic.Controls.Add(this.panel9);
+            this.tabTraffic.Location = new System.Drawing.Point(4, 22);
+            this.tabTraffic.Name = "tabTraffic";
+            this.tabTraffic.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTraffic.Size = new System.Drawing.Size(705, 447);
+            this.tabTraffic.TabIndex = 0;
+            this.tabTraffic.Text = "Перевозки";
+            this.tabTraffic.UseVisualStyleBackColor = true;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.panel11);
+            this.panel9.Controls.Add(this.panel10);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel9.Location = new System.Drawing.Point(3, 3);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(699, 441);
+            this.panel9.TabIndex = 0;
+            // 
+            // panel11
+            // 
+            this.panel11.Controls.Add(this.trafficTree);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel11.Location = new System.Drawing.Point(0, 28);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(699, 413);
+            this.panel11.TabIndex = 1;
+            // 
+            // trafficTree
+            // 
+            this.trafficTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trafficTree.Location = new System.Drawing.Point(0, 0);
+            this.trafficTree.Name = "trafficTree";
+            this.trafficTree.Size = new System.Drawing.Size(699, 413);
+            this.trafficTree.TabIndex = 0;
+            // 
+            // panel10
+            // 
+            this.panel10.Controls.Add(this.btnDeleteTraffic);
+            this.panel10.Controls.Add(this.btnAddTraffic);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel10.Location = new System.Drawing.Point(0, 0);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(699, 28);
+            this.panel10.TabIndex = 0;
+            // 
+            // btnAddTraffic
+            // 
+            this.btnAddTraffic.Location = new System.Drawing.Point(3, 3);
+            this.btnAddTraffic.Name = "btnAddTraffic";
+            this.btnAddTraffic.Size = new System.Drawing.Size(153, 23);
+            this.btnAddTraffic.TabIndex = 0;
+            this.btnAddTraffic.Text = "Добавить";
+            this.btnAddTraffic.UseVisualStyleBackColor = true;
+            this.btnAddTraffic.Click += new System.EventHandler(this.btnAddTraffic_Click);
+            // 
             // tabAirports
             // 
             this.tabAirports.Controls.Add(this.panel8);
@@ -159,6 +220,94 @@
             this.tabAirports.TabIndex = 1;
             this.tabAirports.Text = "Аэропорты";
             this.tabAirports.UseVisualStyleBackColor = true;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.dataGridAirports);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel8.Location = new System.Drawing.Point(3, 3);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(480, 441);
+            this.panel8.TabIndex = 1;
+            // 
+            // dataGridAirports
+            // 
+            this.dataGridAirports.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dataGridAirports.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridAirports.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridAirports.Location = new System.Drawing.Point(0, 0);
+            this.dataGridAirports.Name = "dataGridAirports";
+            this.dataGridAirports.Size = new System.Drawing.Size(480, 441);
+            this.dataGridAirports.TabIndex = 0;
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.labelAirportInfo);
+            this.panel7.Controls.Add(this.btnDeleteAirport);
+            this.panel7.Controls.Add(this.btnChangeAirport);
+            this.panel7.Controls.Add(this.btnAddAirport);
+            this.panel7.Controls.Add(this.textBoxCityAirport);
+            this.panel7.Controls.Add(this.labelCityAirport);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel7.Location = new System.Drawing.Point(480, 3);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(222, 441);
+            this.panel7.TabIndex = 0;
+            // 
+            // labelAirportInfo
+            // 
+            this.labelAirportInfo.AutoSize = true;
+            this.labelAirportInfo.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.labelAirportInfo.Location = new System.Drawing.Point(23, 267);
+            this.labelAirportInfo.Name = "labelAirportInfo";
+            this.labelAirportInfo.Size = new System.Drawing.Size(0, 13);
+            this.labelAirportInfo.TabIndex = 5;
+            // 
+            // btnDeleteAirport
+            // 
+            this.btnDeleteAirport.Location = new System.Drawing.Point(24, 205);
+            this.btnDeleteAirport.Name = "btnDeleteAirport";
+            this.btnDeleteAirport.Size = new System.Drawing.Size(118, 49);
+            this.btnDeleteAirport.TabIndex = 4;
+            this.btnDeleteAirport.Text = "Удалить";
+            this.btnDeleteAirport.UseVisualStyleBackColor = true;
+            this.btnDeleteAirport.Click += new System.EventHandler(this.btnDeleteAirport_Click);
+            // 
+            // btnChangeAirport
+            // 
+            this.btnChangeAirport.Location = new System.Drawing.Point(24, 155);
+            this.btnChangeAirport.Name = "btnChangeAirport";
+            this.btnChangeAirport.Size = new System.Drawing.Size(118, 44);
+            this.btnChangeAirport.TabIndex = 3;
+            this.btnChangeAirport.Text = "Изменить";
+            this.btnChangeAirport.UseVisualStyleBackColor = true;
+            this.btnChangeAirport.Click += new System.EventHandler(this.btnChangeAirport_Click);
+            // 
+            // btnAddAirport
+            // 
+            this.btnAddAirport.Location = new System.Drawing.Point(24, 103);
+            this.btnAddAirport.Name = "btnAddAirport";
+            this.btnAddAirport.Size = new System.Drawing.Size(118, 46);
+            this.btnAddAirport.TabIndex = 2;
+            this.btnAddAirport.Text = "Добавить";
+            this.btnAddAirport.UseVisualStyleBackColor = true;
+            this.btnAddAirport.Click += new System.EventHandler(this.btnAddAirport_Click);
+            // 
+            // textBoxCityAirport
+            // 
+            this.textBoxCityAirport.Location = new System.Drawing.Point(24, 34);
+            this.textBoxCityAirport.Name = "textBoxCityAirport";
+            this.textBoxCityAirport.Size = new System.Drawing.Size(100, 20);
+            this.textBoxCityAirport.TabIndex = 1;
+            // 
+            // labelCityAirport
+            // 
+            this.labelCityAirport.AutoSize = true;
+            this.labelCityAirport.Location = new System.Drawing.Point(21, 18);
+            this.labelCityAirport.Name = "labelCityAirport";
+            this.labelCityAirport.Size = new System.Drawing.Size(37, 13);
+            this.labelCityAirport.TabIndex = 0;
+            this.labelCityAirport.Text = "Город";
             // 
             // tabAirplane
             // 
@@ -437,139 +586,14 @@
             this.labelNameCargo.TabIndex = 0;
             this.labelNameCargo.Text = "Наименование груза";
             // 
-            // panel7
+            // btnDeleteTraffic
             // 
-            this.panel7.Controls.Add(this.labelAirportInfo);
-            this.panel7.Controls.Add(this.btnDeleteAirport);
-            this.panel7.Controls.Add(this.btnChangeAirport);
-            this.panel7.Controls.Add(this.btnAddAirport);
-            this.panel7.Controls.Add(this.textBoxCityAirport);
-            this.panel7.Controls.Add(this.labelCityAirport);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel7.Location = new System.Drawing.Point(480, 3);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(222, 441);
-            this.panel7.TabIndex = 0;
-            // 
-            // panel8
-            // 
-            this.panel8.Controls.Add(this.dataGridAirports);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel8.Location = new System.Drawing.Point(3, 3);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(480, 441);
-            this.panel8.TabIndex = 1;
-            // 
-            // dataGridAirports
-            // 
-            this.dataGridAirports.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.dataGridAirports.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridAirports.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridAirports.Location = new System.Drawing.Point(0, 0);
-            this.dataGridAirports.Name = "dataGridAirports";
-            this.dataGridAirports.Size = new System.Drawing.Size(480, 441);
-            this.dataGridAirports.TabIndex = 0;
-            // 
-            // labelCityAirport
-            // 
-            this.labelCityAirport.AutoSize = true;
-            this.labelCityAirport.Location = new System.Drawing.Point(21, 18);
-            this.labelCityAirport.Name = "labelCityAirport";
-            this.labelCityAirport.Size = new System.Drawing.Size(37, 13);
-            this.labelCityAirport.TabIndex = 0;
-            this.labelCityAirport.Text = "Город";
-            // 
-            // textBoxCityAirport
-            // 
-            this.textBoxCityAirport.Location = new System.Drawing.Point(24, 34);
-            this.textBoxCityAirport.Name = "textBoxCityAirport";
-            this.textBoxCityAirport.Size = new System.Drawing.Size(100, 20);
-            this.textBoxCityAirport.TabIndex = 1;
-            // 
-            // btnAddAirport
-            // 
-            this.btnAddAirport.Location = new System.Drawing.Point(24, 103);
-            this.btnAddAirport.Name = "btnAddAirport";
-            this.btnAddAirport.Size = new System.Drawing.Size(118, 46);
-            this.btnAddAirport.TabIndex = 2;
-            this.btnAddAirport.Text = "Добавить";
-            this.btnAddAirport.UseVisualStyleBackColor = true;
-            this.btnAddAirport.Click += new System.EventHandler(this.btnAddAirport_Click);
-            // 
-            // btnChangeAirport
-            // 
-            this.btnChangeAirport.Location = new System.Drawing.Point(24, 155);
-            this.btnChangeAirport.Name = "btnChangeAirport";
-            this.btnChangeAirport.Size = new System.Drawing.Size(118, 44);
-            this.btnChangeAirport.TabIndex = 3;
-            this.btnChangeAirport.Text = "Изменить";
-            this.btnChangeAirport.UseVisualStyleBackColor = true;
-            this.btnChangeAirport.Click += new System.EventHandler(this.btnChangeAirport_Click);
-            // 
-            // btnDeleteAirport
-            // 
-            this.btnDeleteAirport.Location = new System.Drawing.Point(24, 205);
-            this.btnDeleteAirport.Name = "btnDeleteAirport";
-            this.btnDeleteAirport.Size = new System.Drawing.Size(118, 49);
-            this.btnDeleteAirport.TabIndex = 4;
-            this.btnDeleteAirport.Text = "Удалить";
-            this.btnDeleteAirport.UseVisualStyleBackColor = true;
-            this.btnDeleteAirport.Click += new System.EventHandler(this.btnDeleteAirport_Click);
-            // 
-            // labelAirportInfo
-            // 
-            this.labelAirportInfo.AutoSize = true;
-            this.labelAirportInfo.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.labelAirportInfo.Location = new System.Drawing.Point(23, 267);
-            this.labelAirportInfo.Name = "labelAirportInfo";
-            this.labelAirportInfo.Size = new System.Drawing.Size(0, 13);
-            this.labelAirportInfo.TabIndex = 5;
-            // 
-            // tabTraffic
-            // 
-            this.tabTraffic.Controls.Add(this.panel9);
-            this.tabTraffic.Location = new System.Drawing.Point(4, 22);
-            this.tabTraffic.Name = "tabTraffic";
-            this.tabTraffic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTraffic.Size = new System.Drawing.Size(705, 447);
-            this.tabTraffic.TabIndex = 0;
-            this.tabTraffic.Text = "Перевозки";
-            this.tabTraffic.UseVisualStyleBackColor = true;
-            // 
-            // panel9
-            // 
-            this.panel9.Controls.Add(this.panel11);
-            this.panel9.Controls.Add(this.panel10);
-            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(3, 3);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(699, 441);
-            this.panel9.TabIndex = 0;
-            // 
-            // panel10
-            // 
-            this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel10.Location = new System.Drawing.Point(0, 0);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(699, 28);
-            this.panel10.TabIndex = 0;
-            // 
-            // panel11
-            // 
-            this.panel11.Controls.Add(this.trafficTree);
-            this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel11.Location = new System.Drawing.Point(0, 28);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(699, 413);
-            this.panel11.TabIndex = 1;
-            // 
-            // trafficTree
-            // 
-            this.trafficTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trafficTree.Location = new System.Drawing.Point(0, 0);
-            this.trafficTree.Name = "trafficTree";
-            this.trafficTree.Size = new System.Drawing.Size(699, 413);
-            this.trafficTree.TabIndex = 0;
+            this.btnDeleteTraffic.Location = new System.Drawing.Point(162, 3);
+            this.btnDeleteTraffic.Name = "btnDeleteTraffic";
+            this.btnDeleteTraffic.Size = new System.Drawing.Size(141, 23);
+            this.btnDeleteTraffic.TabIndex = 1;
+            this.btnDeleteTraffic.Text = "Удалить";
+            this.btnDeleteTraffic.UseVisualStyleBackColor = true;
             // 
             // AppView
             // 
@@ -583,7 +607,15 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.tabControlAirplanes.ResumeLayout(false);
+            this.tabTraffic.ResumeLayout(false);
+            this.panel9.ResumeLayout(false);
+            this.panel11.ResumeLayout(false);
+            this.panel10.ResumeLayout(false);
             this.tabAirports.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridAirports)).EndInit();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.tabAirplane.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAirplanes)).EndInit();
@@ -594,13 +626,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridaCargos)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridAirports)).EndInit();
-            this.tabTraffic.ResumeLayout(false);
-            this.panel9.ResumeLayout(false);
-            this.panel11.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -655,5 +680,7 @@
         private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.TreeView trafficTree;
         private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Button btnAddTraffic;
+        private System.Windows.Forms.Button btnDeleteTraffic;
     }
 }

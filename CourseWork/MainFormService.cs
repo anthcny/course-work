@@ -14,14 +14,17 @@ namespace CourseWork
     {
         private static MainForm mainForm;
         private static User appUser;
+        private static CourseWorkDbContext db;
 
         public static MainForm  MainForm { get { return mainForm;  } }
         public static User AppUser { get { return appUser; } }
+        public static CourseWorkDbContext Db { get { return db; } }
 
 
 
         static MainFormService()
         {
+            db = new CourseWorkDbContext();
             mainForm = new MainForm();
         }
 
