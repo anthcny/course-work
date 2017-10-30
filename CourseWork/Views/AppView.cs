@@ -38,6 +38,8 @@ namespace CourseWork.Views
             {
                 await ShowTab(this.tabControlAirplanes.SelectedTab);
             };
+
+            this.Load += (s, a) => CbxQueriesFill();
         }
 
         async Task ShowTab(TabPage tab)
@@ -227,6 +229,7 @@ namespace CourseWork.Views
         {
             await db.Cargoes.LoadAsync();
             dataGridaCargos.DataSource = db.Cargoes.Local.ToBindingList();
+            dataGridaCargos.Columns[dataGridaCargos.Columns.Count-1].Visible = false;
         }
 
         void ShowInfoCargo(string text = "")
@@ -471,7 +474,7 @@ namespace CourseWork.Views
                 else
                     newAirport.City = airport.City;
 
-                
+
 
                 if (airport.Equals(newAirport))
                     return;
@@ -514,7 +517,7 @@ namespace CourseWork.Views
         //------          TRAFFICS             -----
         //--------------------------------------------
 
-        
+
         async Task ShowTraffic()
         {
             await UpdateTrafficTree();
@@ -541,7 +544,7 @@ namespace CourseWork.Views
                 {
                     Tag = traffic
                 };
-                var childNodes = traffic.Cargos.Select(carg => 
+                var childNodes = traffic.Cargos.Select(carg =>
                     new TreeNode($"{carg.Name} - {carg.Quantity} шт. ({carg.Quantity * carg.Weight} кг)") {
                         Tag = carg
                     }).ToArray();
@@ -571,6 +574,270 @@ namespace CourseWork.Views
             db.SaveChanges();
 
             await UpdateTrafficTree();
+        }
+
+        //--------------------------------------------
+        //------          ЗАПРОСЫ             -----
+        //--------------------------------------------
+        private void AddQuery(string text)
+        {
+            cbxQueries.Items.Add(text);
+        }
+
+        private void CbxQueriesFill()
+        {
+            AddQuery("Вывести грузы, которые перевозили все самолеты.");
+            AddQuery("Вывести самолеты, которые не перевозили грузы в указанный аэропорт.");
+            AddQuery("Вывести грузы, которые перевозили в указанный аэропорт заданные самолеты.");
+            AddQuery("Вывести самолеты, которые могут перевезти указанный груз.");
+            AddQuery("Вывести количество указанного груза, который может перевезти указанный самолет.");
+        }
+
+        private void ShowQuantityCargoForAirplane()
+        {
+            var airplane = cbx1.Items[cbx1.SelectedIndex] as Airplane;
+            var cargo = cbx2.Items[cbx2.SelectedIndex] as Cargo;
+
+            var count = Math.Floor(airplane.Carrying/(cargo.Weight*cargo.Quantity));
+
+            listBox1.Items.Add("Самолет может вместить " +count+ " шт. указанного груза.");
+        }
+
+        List<int> addedCargoes = new List<int>();
+
+        private void ShowPlanesAccessCargo()
+        {
+            if (addedCargoes.Count == 0) return;
+            var cargoes = db.Cargoes
+                .Where(c => addedCargoes.Contains(c.Id))
+                .Select(c => c.Weight*c.Quantity)
+                .ToList();
+            float sum=0;
+            cargoes.ForEach(c => sum += c);
+
+            var airplanes = db.Airplanes
+                .Where(c => c.Carrying >= sum)
+                .ToList();
+
+            airplanes.ForEach(c => listBox1.Items.Add(c));
+            if (listBox1.Items.Count == 0)
+                listBox1.Items.Add("Пусто.");
+            listBox1.Refresh();
+        }
+
+        private void AddCargosToList()
+        {
+            var cargo = cbx2.Items[cbx2.SelectedIndex] as Cargo;
+            if (!listBox2.Items.Contains(cargo))
+            {
+                addedCargoes.Add(cargo.Id);
+                listBox2.Items.Add(cargo);
+            }
+        }
+
+        List<int> addedPlanes = new List<int>();
+
+        private void CargosTransportedToAirportOnAirplanes()
+        {
+            var airport = cbx1.Items[cbx1.SelectedIndex] as Airport;
+            if (addedPlanes.Count == 0) return;
+            var traffics = db.Traffics
+                .Where(c => c.IdAirportTo == airport.Id && addedPlanes.Contains(c.IdAirplane))
+                .ToList();
+
+            foreach(var x in traffics)
+            {
+                foreach(var a in x.Cargos)
+                {
+                    listBox1.Items.Add(a);
+                }
+            }
+            if (listBox1.Items.Count == 0)
+                listBox1.Items.Add("Пусто.");
+
+            listBox1.Refresh();
+        }
+
+        void ShowPlanesElements(bool a=false)
+        {
+            cbx2.Visible = a;
+            lbl2.Visible = a;
+            label3.Visible = a;
+            listBox2.Visible = a;
+            btnAddPlane.Visible = a;
+            btnDeleteFromListBox2.Visible = a;
+        }
+
+        
+        private void AddPlaneToListBox()
+        {
+            var airplane = cbx2.Items[cbx2.SelectedIndex] as Airplane;
+            if (!listBox2.Items.Contains(airplane))
+            {
+                addedPlanes.Add(airplane.Id);
+                listBox2.Items.Add(airplane);
+            }
+            
+        }
+
+        private void btnAddPlane_Click(object sender, EventArgs e)
+        {
+            if(cbxQueries.SelectedIndex == 2) AddPlaneToListBox();
+            else if (cbxQueries.SelectedIndex == 3) AddCargosToList();
+        }
+
+        private void TransportedCargos()
+        {
+            var cargos = db.Cargoes
+                .Where(c => c.Traffics.Count != 0 )
+                .ToList();
+
+            cargos.ForEach(c => listBox1.Items.Add(c.ToString()));
+        }
+
+        private void AirplanesDidntTransportToThisAirport()
+        {
+            var airport = cbx1.Items[cbx1.SelectedIndex] as Airport;
+
+            var ids = db.Traffics
+                .Where(c => c.IdAirportTo == airport.Id)
+                .Select(c => c.IdAirplane)
+                .Distinct()
+                .ToArray();
+
+            var airplanes = db.Airplanes
+                .Where(c => !ids.Contains(c.Id))
+                .Distinct()
+                .ToList();
+
+            airplanes.ForEach(c => listBox1.Items.Add(c));
+        }
+
+        private void Lbl1ShowInfo(string text="")
+        {
+            lbl1.Text = text;
+        }
+
+        void Lbl2ShowInfo(string text="")
+        {
+            lbl2.Text = text;
+        }
+
+        private void btnEnter_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            if (cbxQueries.SelectedIndex == 0)
+                TransportedCargos();
+            else if (cbxQueries.SelectedIndex == 1)
+            {
+                AirplanesDidntTransportToThisAirport();
+            }
+            else if (cbxQueries.SelectedIndex == 2)
+            {
+                CargosTransportedToAirportOnAirplanes();
+            }
+            else if (cbxQueries.SelectedIndex == 3)
+            {
+                ShowPlanesAccessCargo();
+            }
+            else if (cbxQueries.SelectedIndex == 4)
+            {
+                ShowQuantityCargoForAirplane();
+            }
+
+        }
+
+        private void cbxQueries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxQueries.SelectedIndex == 0)
+            {
+                listBox2.Items.Clear();
+                listBox1.Items.Clear();
+                Lbl1ShowInfo();
+                cbx1.Visible = false;
+                ShowPlanesElements();
+            }
+            else if (cbxQueries.SelectedIndex == 1)
+            {
+                listBox2.Items.Clear();
+                listBox1.Items.Clear();
+                ShowPlanesElements();
+                Lbl1ShowInfo("Аэропорт");
+                cbx1.Visible = true;
+                db.Airports.Load();
+                cbx1.DataSource = db.Airports.Local.ToBindingList();
+            }
+            else if (cbxQueries.SelectedIndex == 2)
+            {
+                addedPlanes = new List<int>();
+                listBox2.Items.Clear();
+                listBox1.Items.Clear();
+                Lbl1ShowInfo("Аэропорт");
+                label3.Text = "Добавленные самолеты";
+                cbx1.Visible = true;
+                db.Airports.Load();
+                cbx1.DataSource = db.Airports.Local.ToBindingList();
+                Lbl2ShowInfo("Самолет");
+                db.Airplanes.Load();
+                cbx2.DataSource = db.Airplanes.Local.ToBindingList();
+                ShowPlanesElements(true);
+            }
+            else if (cbxQueries.SelectedIndex == 3)
+            {
+                addedCargoes = new List<int>();
+                listBox2.Items.Clear();
+                listBox1.Items.Clear();
+                Lbl1ShowInfo();
+                cbx1.Visible = false;
+                Lbl2ShowInfo("Груз");
+                label3.Text = "Добавленные грузы";
+                db.Cargoes.Load();
+                cbx2.DataSource = db.Cargoes.Local.ToBindingList();
+                ShowPlanesElements(true);
+            }
+            else if (cbxQueries.SelectedIndex == 4)
+            {
+                listBox2.Items.Clear();
+                listBox2.Visible = false;
+                lbl2.Visible = true;
+                btnAddPlane.Visible = false;
+                btnDeleteFromListBox2.Visible = false;
+                listBox1.Items.Clear();
+                Lbl1ShowInfo("Самолет");
+                db.Airplanes.Load();
+                cbx1.DataSource = db.Airplanes.Local.ToBindingList();
+                cbx1.Visible = true;
+                Lbl2ShowInfo("Груз");
+                cbx2.Visible = true;
+                label3.Text = "";
+                db.Cargoes.Load();
+                cbx2.DataSource = db.Cargoes.Local.ToBindingList();
+                
+            }
+
+        }
+
+        private void DeleteFromListBox2()
+        {
+            if (listBox2.SelectedIndex < 0) return;
+            if (cbxQueries.SelectedIndex == 2)
+            {
+                var elem = listBox2.SelectedItem as Airplane;
+                addedPlanes.Remove(elem.Id);
+            }
+            else if (cbxQueries.SelectedIndex == 3)
+            {
+                var elem = listBox2.SelectedItem as Cargo;
+                addedCargoes.Remove(elem.Id);
+            }
+            else return;
+            listBox2.Items.RemoveAt(listBox2.SelectedIndex);
+        }
+
+
+        private void btnDeleteFromListBox2_Click(object sender, EventArgs e)
+        {
+            DeleteFromListBox2();
         }
     }
 }

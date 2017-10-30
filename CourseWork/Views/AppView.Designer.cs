@@ -38,6 +38,7 @@
             this.panel11 = new System.Windows.Forms.Panel();
             this.trafficTree = new System.Windows.Forms.TreeView();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.btnDeleteTraffic = new System.Windows.Forms.Button();
             this.btnAddTraffic = new System.Windows.Forms.Button();
             this.tabAirports = new System.Windows.Forms.TabPage();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -77,7 +78,21 @@
             this.labelWeightCargo = new System.Windows.Forms.Label();
             this.textBoxNameCargo = new System.Windows.Forms.TextBox();
             this.labelNameCargo = new System.Windows.Forms.Label();
-            this.btnDeleteTraffic = new System.Windows.Forms.Button();
+            this.tabQueries = new System.Windows.Forms.TabPage();
+            this.panel14 = new System.Windows.Forms.Panel();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.btnDeleteFromListBox2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnAddPlane = new System.Windows.Forms.Button();
+            this.cbx2 = new System.Windows.Forms.ComboBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.lbl1 = new System.Windows.Forms.Label();
+            this.cbx1 = new System.Windows.Forms.ComboBox();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.cbxQueries = new System.Windows.Forms.ComboBox();
+            this.btnEnter = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
@@ -97,6 +112,10 @@
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridaCargos)).BeginInit();
             this.panel5.SuspendLayout();
+            this.tabQueries.SuspendLayout();
+            this.panel14.SuspendLayout();
+            this.panel13.SuspendLayout();
+            this.panel12.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginName
@@ -144,6 +163,7 @@
             this.tabControlAirplanes.Controls.Add(this.tabAirports);
             this.tabControlAirplanes.Controls.Add(this.tabAirplane);
             this.tabControlAirplanes.Controls.Add(this.tabCargos);
+            this.tabControlAirplanes.Controls.Add(this.tabQueries);
             this.tabControlAirplanes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlAirplanes.Location = new System.Drawing.Point(0, 0);
             this.tabControlAirplanes.Name = "tabControlAirplanes";
@@ -198,6 +218,15 @@
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(699, 28);
             this.panel10.TabIndex = 0;
+            // 
+            // btnDeleteTraffic
+            // 
+            this.btnDeleteTraffic.Location = new System.Drawing.Point(162, 3);
+            this.btnDeleteTraffic.Name = "btnDeleteTraffic";
+            this.btnDeleteTraffic.Size = new System.Drawing.Size(141, 23);
+            this.btnDeleteTraffic.TabIndex = 1;
+            this.btnDeleteTraffic.Text = "Удалить";
+            this.btnDeleteTraffic.UseVisualStyleBackColor = true;
             // 
             // btnAddTraffic
             // 
@@ -586,14 +615,155 @@
             this.labelNameCargo.TabIndex = 0;
             this.labelNameCargo.Text = "Наименование груза";
             // 
-            // btnDeleteTraffic
+            // tabQueries
             // 
-            this.btnDeleteTraffic.Location = new System.Drawing.Point(162, 3);
-            this.btnDeleteTraffic.Name = "btnDeleteTraffic";
-            this.btnDeleteTraffic.Size = new System.Drawing.Size(141, 23);
-            this.btnDeleteTraffic.TabIndex = 1;
-            this.btnDeleteTraffic.Text = "Удалить";
-            this.btnDeleteTraffic.UseVisualStyleBackColor = true;
+            this.tabQueries.Controls.Add(this.panel14);
+            this.tabQueries.Controls.Add(this.panel13);
+            this.tabQueries.Controls.Add(this.panel12);
+            this.tabQueries.Location = new System.Drawing.Point(4, 22);
+            this.tabQueries.Name = "tabQueries";
+            this.tabQueries.Size = new System.Drawing.Size(705, 447);
+            this.tabQueries.TabIndex = 4;
+            this.tabQueries.Text = "Запросы";
+            this.tabQueries.UseVisualStyleBackColor = true;
+            // 
+            // panel14
+            // 
+            this.panel14.Controls.Add(this.listBox1);
+            this.panel14.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel14.Location = new System.Drawing.Point(0, 47);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(478, 400);
+            this.panel14.TabIndex = 3;
+            // 
+            // listBox1
+            // 
+            this.listBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(0, 0);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(475, 400);
+            this.listBox1.TabIndex = 0;
+            // 
+            // lbl2
+            // 
+            this.lbl2.AutoSize = true;
+            this.lbl2.Location = new System.Drawing.Point(3, 55);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(0, 13);
+            this.lbl2.TabIndex = 3;
+            // 
+            // panel13
+            // 
+            this.panel13.Controls.Add(this.btnDeleteFromListBox2);
+            this.panel13.Controls.Add(this.lbl2);
+            this.panel13.Controls.Add(this.label3);
+            this.panel13.Controls.Add(this.btnAddPlane);
+            this.panel13.Controls.Add(this.cbx2);
+            this.panel13.Controls.Add(this.listBox2);
+            this.panel13.Controls.Add(this.lbl1);
+            this.panel13.Controls.Add(this.cbx1);
+            this.panel13.Location = new System.Drawing.Point(484, 47);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(221, 335);
+            this.panel13.TabIndex = 2;
+            // 
+            // btnDeleteFromListBox2
+            // 
+            this.btnDeleteFromListBox2.Location = new System.Drawing.Point(3, 264);
+            this.btnDeleteFromListBox2.Name = "btnDeleteFromListBox2";
+            this.btnDeleteFromListBox2.Size = new System.Drawing.Size(194, 23);
+            this.btnDeleteFromListBox2.TabIndex = 6;
+            this.btnDeleteFromListBox2.Text = " Удалить";
+            this.btnDeleteFromListBox2.UseVisualStyleBackColor = true;
+            this.btnDeleteFromListBox2.Visible = false;
+            this.btnDeleteFromListBox2.Click += new System.EventHandler(this.btnDeleteFromListBox2_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(0, 134);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(132, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Добавленные самолеты";
+            this.label3.Visible = false;
+            // 
+            // btnAddPlane
+            // 
+            this.btnAddPlane.Location = new System.Drawing.Point(3, 98);
+            this.btnAddPlane.Name = "btnAddPlane";
+            this.btnAddPlane.Size = new System.Drawing.Size(194, 23);
+            this.btnAddPlane.TabIndex = 4;
+            this.btnAddPlane.Text = " Добавить ";
+            this.btnAddPlane.UseVisualStyleBackColor = true;
+            this.btnAddPlane.Visible = false;
+            this.btnAddPlane.Click += new System.EventHandler(this.btnAddPlane_Click);
+            // 
+            // cbx2
+            // 
+            this.cbx2.FormattingEnabled = true;
+            this.cbx2.Location = new System.Drawing.Point(3, 71);
+            this.cbx2.Name = "cbx2";
+            this.cbx2.Size = new System.Drawing.Size(194, 21);
+            this.cbx2.TabIndex = 0;
+            this.cbx2.Visible = false;
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(3, 150);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(194, 108);
+            this.listBox2.TabIndex = 1;
+            this.listBox2.Visible = false;
+            // 
+            // lbl1
+            // 
+            this.lbl1.AutoSize = true;
+            this.lbl1.Location = new System.Drawing.Point(0, 0);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(0, 13);
+            this.lbl1.TabIndex = 2;
+            // 
+            // cbx1
+            // 
+            this.cbx1.FormattingEnabled = true;
+            this.cbx1.Location = new System.Drawing.Point(3, 16);
+            this.cbx1.Name = "cbx1";
+            this.cbx1.Size = new System.Drawing.Size(194, 21);
+            this.cbx1.TabIndex = 1;
+            this.cbx1.Visible = false;
+            // 
+            // panel12
+            // 
+            this.panel12.Controls.Add(this.cbxQueries);
+            this.panel12.Controls.Add(this.btnEnter);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel12.Location = new System.Drawing.Point(0, 0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(705, 47);
+            this.panel12.TabIndex = 1;
+            // 
+            // cbxQueries
+            // 
+            this.cbxQueries.FormattingEnabled = true;
+            this.cbxQueries.Location = new System.Drawing.Point(28, 13);
+            this.cbxQueries.Name = "cbxQueries";
+            this.cbxQueries.Size = new System.Drawing.Size(547, 21);
+            this.cbxQueries.TabIndex = 0;
+            this.cbxQueries.SelectedIndexChanged += new System.EventHandler(this.cbxQueries_SelectedIndexChanged);
+            // 
+            // btnEnter
+            // 
+            this.btnEnter.Location = new System.Drawing.Point(581, 10);
+            this.btnEnter.Name = "btnEnter";
+            this.btnEnter.Size = new System.Drawing.Size(121, 25);
+            this.btnEnter.TabIndex = 0;
+            this.btnEnter.Text = "Вывод";
+            this.btnEnter.UseVisualStyleBackColor = true;
+            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
             // AppView
             // 
@@ -626,6 +796,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridaCargos)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.tabQueries.ResumeLayout(false);
+            this.panel14.ResumeLayout(false);
+            this.panel13.ResumeLayout(false);
+            this.panel13.PerformLayout();
+            this.panel12.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -682,5 +857,20 @@
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Button btnAddTraffic;
         private System.Windows.Forms.Button btnDeleteTraffic;
+        private System.Windows.Forms.TabPage tabQueries;
+        private System.Windows.Forms.ComboBox cbxQueries;
+        private System.Windows.Forms.Panel panel14;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Button btnEnter;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.ComboBox cbx1;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.ComboBox cbx2;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnAddPlane;
+        private System.Windows.Forms.Button btnDeleteFromListBox2;
     }
 }

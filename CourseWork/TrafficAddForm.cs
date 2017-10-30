@@ -56,14 +56,15 @@ namespace CourseWork
             var cargo = cbxCargoes.Items[cbxCargoes.SelectedIndex] as Cargo;
             var airPlane = cbxAirplanes.Items[cbxAirplanes.SelectedIndex] as Airplane;
             cargosWeight += cargo.Weight * cargo.Quantity;
-            if(cargosWeight > airPlane.Carrying)
+            if (cargosWeight > airPlane.Carrying)
             {
+                cargosWeight -= cargo.Weight * cargo.Quantity;
                 MessageBox.Show("Операция отклонена! Превышен суммерый вес груза для данного самолета.");
                 return;
             }
-
+            
             if (idCargoesToList.IndexOf(cargo.Id) >= 0) return;
-
+            
             idCargoesToList.Add(cargo.Id);
 
             checkedListBoxCargoes.Items.Add(cbxCargoes.SelectedItem);
@@ -79,8 +80,9 @@ namespace CourseWork
             while (checkedCargoes.Count != 0)
             {
                 var itemToRemove = checkedCargoes[0];
+                int c = (itemToRemove as Cargo).Id;
                 checkedListBoxCargoes.Items.Remove(itemToRemove);
-                idCargoesToList.RemoveAt(idCargoesToList.IndexOf(cbxCargoes.Items.IndexOf(itemToRemove)));
+                idCargoesToList.Remove(c);
             }
             checkedListBoxCargoes.Refresh();
         }
