@@ -93,6 +93,7 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.cbxQueries = new System.Windows.Forms.ComboBox();
             this.btnEnter = new System.Windows.Forms.Button();
+            this.btnXls = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
@@ -510,6 +511,7 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.btnXls);
             this.panel5.Controls.Add(this.btnDeleteCargo);
             this.panel5.Controls.Add(this.btnChangeCargo);
             this.panel5.Controls.Add(this.btnAddCargo);
@@ -766,6 +768,15 @@
             this.btnEnter.UseVisualStyleBackColor = true;
             this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
+            // btnXls
+            // 
+            this.btnXls.Location = new System.Drawing.Point(14, 359);
+            this.btnXls.Name = "btnXls";
+            this.btnXls.Size = new System.Drawing.Size(144, 23);
+            this.btnXls.TabIndex = 10;
+            this.btnXls.Text = "Экспорт XLS";
+            this.btnXls.UseVisualStyleBackColor = true;
+            // 
             // AppView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -873,5 +884,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnAddPlane;
         private System.Windows.Forms.Button btnDeleteFromListBox2;
+        private System.Windows.Forms.Button btnXls;
     }
 }

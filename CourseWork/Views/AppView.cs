@@ -17,11 +17,13 @@ namespace CourseWork.Views
     public partial class AppView : UserControl
     {
         CourseWorkDbContext db;
+        ExcelService excelService;
+
         public AppView()
         {
             InitializeComponent();
 
-            //this.db = new CourseWorkDbContext();
+            excelService = new ExcelService();
             db = MainFormService.Db;
             this.loginName.Text = MainFormService.AppUser.Login;
             this.btnLogout.Click += (sender, e) =>
@@ -40,6 +42,30 @@ namespace CourseWork.Views
             };
 
             this.Load += (s, a) => CbxQueriesFill();
+
+            btnXls.Click += async (s, a) => await ExportXls();
+        }
+
+        async Task ExportXls()
+        {
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = "xlsx";
+            saveFileDialog.AddExtension = true;
+            var dr = saveFileDialog.ShowDialog(this);
+            if (dr == DialogResult.OK)
+            {
+                var fileName = saveFileDialog.FileName;
+                try
+                {
+                    var cargoes = await db.Cargoes.ToListAsync();
+                    excelService.SaveToExcel(fileName, cargoes);
+                    MainFormService.ShowInfo("Экспорт успешно выполнен!");
+                }
+                catch (Exception ex)
+                {
+                    MainFormService.ShowError(ex.Message);
+                }
+            }
         }
 
         async Task ShowTab(TabPage tab)

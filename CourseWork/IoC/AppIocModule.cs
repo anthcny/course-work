@@ -17,6 +17,7 @@ namespace CourseWork.IoC
         {
             Bind<IUserService>().To<UserService>();
             Bind<LoginView>().ToSelf();
+            Bind<ExcelService>().ToSelf();
         }
     }
 }
