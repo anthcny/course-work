@@ -16,5 +16,17 @@ namespace CourseWork
         {
             InitializeComponent();
         }
+
+        public Control.ControlCollection HostControl
+        {
+            get {
+                return hostPanle.Controls;
+            }
+        }
+
+        public void SetStatus(string status = "")
+        {
+            lblStatus.Text = status;
+        }
     }
 }

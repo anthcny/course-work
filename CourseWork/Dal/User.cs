@@ -20,6 +20,10 @@ namespace CourseWork.Dal
         [Required]
         public string Password { get; set; }
 
+        public string Name { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
 
         public override string ToString()
         {

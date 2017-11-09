@@ -68,6 +68,7 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.dataGridaCargos = new System.Windows.Forms.DataGridView();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.btnXls = new System.Windows.Forms.Button();
             this.btnDeleteCargo = new System.Windows.Forms.Button();
             this.btnChangeCargo = new System.Windows.Forms.Button();
             this.btnAddCargo = new System.Windows.Forms.Button();
@@ -93,7 +94,16 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.cbxQueries = new System.Windows.Forms.ComboBox();
             this.btnEnter = new System.Windows.Forms.Button();
-            this.btnXls = new System.Windows.Forms.Button();
+            this.tabUsers = new System.Windows.Forms.TabPage();
+            this.panel16 = new System.Windows.Forms.Panel();
+            this.usersGrid = new System.Windows.Forms.DataGridView();
+            this.panel15 = new System.Windows.Forms.Panel();
+            this.btnGrAddFakeUsers = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbxPageNum = new System.Windows.Forms.ComboBox();
+            this.cbxRowsPerPage = new System.Windows.Forms.ComboBox();
+            this.btnGrUsersRefresh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
@@ -117,6 +127,10 @@
             this.panel14.SuspendLayout();
             this.panel13.SuspendLayout();
             this.panel12.SuspendLayout();
+            this.tabUsers.SuspendLayout();
+            this.panel16.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usersGrid)).BeginInit();
+            this.panel15.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginName
@@ -165,6 +179,7 @@
             this.tabControlAirplanes.Controls.Add(this.tabAirplane);
             this.tabControlAirplanes.Controls.Add(this.tabCargos);
             this.tabControlAirplanes.Controls.Add(this.tabQueries);
+            this.tabControlAirplanes.Controls.Add(this.tabUsers);
             this.tabControlAirplanes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlAirplanes.Location = new System.Drawing.Point(0, 0);
             this.tabControlAirplanes.Name = "tabControlAirplanes";
@@ -528,6 +543,15 @@
             this.panel5.Size = new System.Drawing.Size(206, 447);
             this.panel5.TabIndex = 0;
             // 
+            // btnXls
+            // 
+            this.btnXls.Location = new System.Drawing.Point(14, 359);
+            this.btnXls.Name = "btnXls";
+            this.btnXls.Size = new System.Drawing.Size(144, 23);
+            this.btnXls.TabIndex = 10;
+            this.btnXls.Text = "Экспорт XLS";
+            this.btnXls.UseVisualStyleBackColor = true;
+            // 
             // btnDeleteCargo
             // 
             this.btnDeleteCargo.Location = new System.Drawing.Point(14, 293);
@@ -768,14 +792,109 @@
             this.btnEnter.UseVisualStyleBackColor = true;
             this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
-            // btnXls
+            // tabUsers
             // 
-            this.btnXls.Location = new System.Drawing.Point(14, 359);
-            this.btnXls.Name = "btnXls";
-            this.btnXls.Size = new System.Drawing.Size(144, 23);
-            this.btnXls.TabIndex = 10;
-            this.btnXls.Text = "Экспорт XLS";
-            this.btnXls.UseVisualStyleBackColor = true;
+            this.tabUsers.Controls.Add(this.panel16);
+            this.tabUsers.Controls.Add(this.panel15);
+            this.tabUsers.Location = new System.Drawing.Point(4, 22);
+            this.tabUsers.Name = "tabUsers";
+            this.tabUsers.Size = new System.Drawing.Size(705, 447);
+            this.tabUsers.TabIndex = 5;
+            this.tabUsers.Text = "Пользователи";
+            this.tabUsers.UseVisualStyleBackColor = true;
+            // 
+            // panel16
+            // 
+            this.panel16.Controls.Add(this.usersGrid);
+            this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel16.Location = new System.Drawing.Point(0, 31);
+            this.panel16.Name = "panel16";
+            this.panel16.Size = new System.Drawing.Size(705, 416);
+            this.panel16.TabIndex = 1;
+            // 
+            // usersGrid
+            // 
+            this.usersGrid.AllowUserToAddRows = false;
+            this.usersGrid.AllowUserToDeleteRows = false;
+            this.usersGrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.usersGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.usersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.usersGrid.GridColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.usersGrid.Location = new System.Drawing.Point(0, 0);
+            this.usersGrid.Name = "usersGrid";
+            this.usersGrid.ReadOnly = true;
+            this.usersGrid.Size = new System.Drawing.Size(705, 416);
+            this.usersGrid.TabIndex = 0;
+            // 
+            // panel15
+            // 
+            this.panel15.Controls.Add(this.btnGrAddFakeUsers);
+            this.panel15.Controls.Add(this.label5);
+            this.panel15.Controls.Add(this.label4);
+            this.panel15.Controls.Add(this.cbxPageNum);
+            this.panel15.Controls.Add(this.cbxRowsPerPage);
+            this.panel15.Controls.Add(this.btnGrUsersRefresh);
+            this.panel15.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel15.Location = new System.Drawing.Point(0, 0);
+            this.panel15.Name = "panel15";
+            this.panel15.Size = new System.Drawing.Size(705, 31);
+            this.panel15.TabIndex = 0;
+            // 
+            // btnGrAddFakeUsers
+            // 
+            this.btnGrAddFakeUsers.Location = new System.Drawing.Point(84, 3);
+            this.btnGrAddFakeUsers.Name = "btnGrAddFakeUsers";
+            this.btnGrAddFakeUsers.Size = new System.Drawing.Size(75, 23);
+            this.btnGrAddFakeUsers.TabIndex = 5;
+            this.btnGrAddFakeUsers.Text = "+3333";
+            this.btnGrAddFakeUsers.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(454, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Страница:";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(572, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(76, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Кол-во строк:";
+            // 
+            // cbxPageNum
+            // 
+            this.cbxPageNum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxPageNum.FormattingEnabled = true;
+            this.cbxPageNum.Location = new System.Drawing.Point(518, 5);
+            this.cbxPageNum.Name = "cbxPageNum";
+            this.cbxPageNum.Size = new System.Drawing.Size(48, 21);
+            this.cbxPageNum.TabIndex = 2;
+            // 
+            // cbxRowsPerPage
+            // 
+            this.cbxRowsPerPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxRowsPerPage.FormattingEnabled = true;
+            this.cbxRowsPerPage.Location = new System.Drawing.Point(654, 5);
+            this.cbxRowsPerPage.Name = "cbxRowsPerPage";
+            this.cbxRowsPerPage.Size = new System.Drawing.Size(48, 21);
+            this.cbxRowsPerPage.TabIndex = 1;
+            // 
+            // btnGrUsersRefresh
+            // 
+            this.btnGrUsersRefresh.Location = new System.Drawing.Point(3, 3);
+            this.btnGrUsersRefresh.Name = "btnGrUsersRefresh";
+            this.btnGrUsersRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnGrUsersRefresh.TabIndex = 0;
+            this.btnGrUsersRefresh.Text = "Обновить";
+            this.btnGrUsersRefresh.UseVisualStyleBackColor = true;
             // 
             // AppView
             // 
@@ -813,6 +932,11 @@
             this.panel13.ResumeLayout(false);
             this.panel13.PerformLayout();
             this.panel12.ResumeLayout(false);
+            this.tabUsers.ResumeLayout(false);
+            this.panel16.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.usersGrid)).EndInit();
+            this.panel15.ResumeLayout(false);
+            this.panel15.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -885,5 +1009,15 @@
         private System.Windows.Forms.Button btnAddPlane;
         private System.Windows.Forms.Button btnDeleteFromListBox2;
         private System.Windows.Forms.Button btnXls;
+        private System.Windows.Forms.TabPage tabUsers;
+        private System.Windows.Forms.Panel panel16;
+        private System.Windows.Forms.Panel panel15;
+        private System.Windows.Forms.DataGridView usersGrid;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbxPageNum;
+        private System.Windows.Forms.ComboBox cbxRowsPerPage;
+        private System.Windows.Forms.Button btnGrUsersRefresh;
+        private System.Windows.Forms.Button btnGrAddFakeUsers;
     }
 }

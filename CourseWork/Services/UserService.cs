@@ -10,6 +10,7 @@ namespace CourseWork.Services
 {
     using Dal;
     using Contracts;
+    using Faker;
 
     class UserService: BaseService, IUserService
     {
@@ -43,17 +44,42 @@ namespace CourseWork.Services
             });
         }
 
+        async public Task AddUsers(IEnumerable<User> users)
+        {
+            await UseDb(async db => {
+                db.Users.AddRange(users);
+                await db.SaveChangesAsync();
+            });
+        }
+
         async public Task<bool> CheckLoginUser(string login, string pass)
         {
+            var hash = CryptoService.Get().GetMd5Hash(pass);
             return await UseDb(async db =>
                 await db.Users
-                        .AnyAsync(u => u.Login == login && u.Password == pass)
+                        .AnyAsync(u => u.Login == login && u.Password == hash)
             );
         }
 
         async public Task<User> GetUserByLogin(string login)
         {
             return await UseDb(async db => await db.Users.FirstOrDefaultAsync(u => u.Login == login));
+        }
+
+        public async Task<int> GetUsersCountAsync()
+        {
+            return await UseDb(async db => await db.Users.CountAsync());
+        }
+
+        public async Task<List<User>> SkipTakeUsersAsync(int skip, int take)
+        {
+            return await UseDb(
+                async db => await db.Users
+                    .OrderBy(u => u.Id)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync()
+            );
         }
     }
 }

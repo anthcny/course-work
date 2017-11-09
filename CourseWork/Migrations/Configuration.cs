@@ -5,6 +5,7 @@ namespace CourseWork.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Dal;
+    using Services;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CourseWorkDbContext>
     {
@@ -20,7 +21,7 @@ namespace CourseWork.Migrations
                 new User
                 {
                     Login = "root",
-                    Password = "root"
+                    Password = CryptoService.Get().GetMd5Hash("root")
                 }
             );
         }

@@ -24,7 +24,8 @@ namespace CourseWork
             Kernel.LoadKernel();
             ServiceLocator.GetUserService().Load();
 
-            MainFormService.ShowLoginView();
+            //MainFormService.ShowLoginView();
+            MainFormService.ShowAppView(new User());
 
             Application.Run(MainFormService.MainForm);            
         }

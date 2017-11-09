@@ -15,9 +15,14 @@ namespace CourseWork.Services.Contracts
         Task<List<User>> GetUsers(Expression<Func<User, bool>> predicate = null);
 
         Task AddUser(User user);
+        Task AddUsers(IEnumerable<User> users);
 
         Task<bool> CheckLoginUser(string login, string pass);
 
         Task<User> GetUserByLogin(string login);
+
+        Task<int> GetUsersCountAsync();
+
+        Task<List<User>> SkipTakeUsersAsync(int skip, int take);
     }
 }

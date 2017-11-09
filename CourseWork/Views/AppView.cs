@@ -11,21 +11,26 @@ using System.Windows.Forms;
 namespace CourseWork.Views
 {
     using Services;
+    using Services.Contracts;
     using Dal;
     using System.Data.Entity;
+    using Faker;
+    using System.Reflection;
 
     public partial class AppView : UserControl
     {
         CourseWorkDbContext db;
         ExcelService excelService;
+        IUserService UserService;
 
-        public AppView()
+        public AppView(IUserService userService)
         {
+            UserService = userService;
             InitializeComponent();
 
             excelService = new ExcelService();
             db = MainFormService.Db;
-            this.loginName.Text = MainFormService.AppUser.Login;
+            this.loginName.Text = MainFormService.AppUser.Name;
             this.btnLogout.Click += (sender, e) =>
             {
                 MainFormService.LogoutUser();
@@ -36,14 +41,45 @@ namespace CourseWork.Views
             this.tabControlAirplanes.Selected += async (sender, args) => await ShowTab(args.TabPage);
             this.btnDeleteTraffic.Click += async (s, a) => await DeleteTraffic();
 
-            this.Load += async (s, a) =>
-            {
-                await ShowTab(this.tabControlAirplanes.SelectedTab);
-            };
+            this.Load += async (s, a) => await ShowTab(this.tabControlAirplanes.SelectedTab);
 
             this.Load += (s, a) => CbxQueriesFill();
 
             btnXls.Click += async (s, a) => await ExportXls();
+            btnGrUsersRefresh.Click += async (s, a) => await RefreshGridUsers();
+
+            cbxPageNum.SelectedIndexChanged += async (s, a) => await RefreshGridUsers();
+            cbxRowsPerPage.SelectedIndexChanged += async (s, a) => {
+                await UpdateUserGridPages(
+                    GetRowsPerPageSelected()
+                );
+                cbxPageNum.SelectedIndex = 0;
+                await RefreshGridUsers();
+            };
+
+            btnGrAddFakeUsers.Click += (s, a) => AddFakeUsers();
+
+            InitGridUsers();
+        }
+
+        void AddFakeUsers()
+        {
+            SetLoadingStatus();
+            var bgWorker = new BackgroundWorker();
+            bgWorker.DoWork += async (s, a) =>
+            {
+                var crypto = CryptoService.Get();
+                var users = new Faker<User>().CreateMany(3333, user => {
+                    user.Password = crypto.GetMd5Hash(user.Login);
+                });
+                await UserService.AddUsers(users);
+            };
+            bgWorker.RunWorkerCompleted += async (s, a) =>
+            {
+                SetLoadingStatus(false);
+                await UpdateTabUsersAsync();
+            };
+            bgWorker.RunWorkerAsync();
         }
 
         async Task ExportXls()
@@ -70,6 +106,7 @@ namespace CourseWork.Views
 
         async Task ShowTab(TabPage tab)
         {
+            MainFormService.SetStatusBarText("");
             if (this.tabAirplane == tab)
                 await ShowAirplanesDataGrid();
             else if (this.tabCargos == tab)
@@ -78,9 +115,181 @@ namespace CourseWork.Views
                 await ShowAirportsDataGrid();
             else if (this.tabTraffic == tab)
                 await ShowTraffic();
+            else if (this.tabUsers == tab)
+                await UpdateTabUsersAsync();
         }
 
-        //AirplaneService airplaneService { get { return AirplaneService.Get(); } } 
+        //--------------------------------------------
+        //------           USERS           -----
+        //--------------------------------------------
+
+        enum UserGridColumns
+        {
+            Id, Name, Login, Pass, Created 
+        } 
+
+        void InitGridUsers()
+        {
+            usersGrid.ColumnCount = 5;
+            usersGrid.Columns[0].Name = "Идентификатор";
+            usersGrid.Columns[0].Tag = UserGridColumns.Id;
+            usersGrid.Columns[1].Name = "Имя";
+            usersGrid.Columns[1].Tag = UserGridColumns.Name;
+            usersGrid.Columns[2].Name = "Логин";
+            usersGrid.Columns[2].Tag = UserGridColumns.Login;
+            usersGrid.Columns[3].Name = "Пароль";
+            usersGrid.Columns[3].Tag = UserGridColumns.Pass;
+            usersGrid.Columns[4].Name = "Дата создания";
+            usersGrid.Columns[4].Tag = UserGridColumns.Created;
+
+            SetDoubleBuffered(usersGrid, true);
+        }
+
+        public async Task UpdateTabUsersAsync()
+        {
+            await UpdateUserGridPages(
+                GetRowsPerPageSelected()
+            );
+            cbxPageNum.SelectedIndex = 0;
+        }
+
+        async Task UpdateUserGridPages(int rowsPerPage)
+        {
+            var userCounts = await UserService.GetUsersCountAsync();
+            MainFormService.SetStatusBarText($"Всего пользователей: {userCounts}");
+
+            var pageCount =
+                userCounts == 0
+                ? 1
+                : (userCounts % rowsPerPage) == 0
+                    ? userCounts / rowsPerPage
+                    : (userCounts / rowsPerPage) + 1;
+            cbxPageNum.Items.Clear();
+            Enumerable.Range(1, pageCount).ToList()
+                .ForEach(p => cbxPageNum.Items.Add(new CbxItem(p.ToString(), p)));
+        }
+
+        int? GetSelectedPageNum() => (cbxPageNum.SelectedItem as CbxItem)?.Value;
+
+        void SetLoadingStatus(bool show = true)
+        {
+            MainFormService.SetStatusBarText(show ? "Загрузка данных..." : "");
+        }
+
+        async Task UpdateDataGridUsersAsync(int pageNum, int rowsPerPage)
+        {
+            SetLoadingStatus();
+            var users = await UserService.SkipTakeUsersAsync((pageNum - 1) * rowsPerPage, rowsPerPage);
+            usersGrid.Rows.Clear();
+            //users.ForEach(user =>
+            //{
+            //    //var dgr = new DataGridViewRow();
+            //    //dgr.CreateCells(
+            //    //    usersGrid,
+            //    //    user.Id,
+            //    //    user.Name,
+            //    //    user.Login,
+            //    //    user.Password,
+            //    //    user.CreatedAt?.ToString()
+            //    //);
+            //    usersGrid.Rows.Add(new object[] 
+            //    {
+            //        user.Id,
+            //        user.Name,
+            //        user.Login,
+            //        user.Password,
+            //        user.CreatedAt?.ToString()
+            //    });
+            //});
+            var rows = users.Select(user =>
+            {
+                var dgr = new DataGridViewRow();
+                dgr.CreateCells(
+                    usersGrid,
+                    user.Id,
+                    user.Name,
+                    user.Login,
+                    user.Password,
+                    user.CreatedAt?.ToString()
+                );
+                return dgr;
+            }).ToArray();
+            usersGrid.Rows.AddRange(rows);
+            var userCounts = await UserService.GetUsersCountAsync();
+            MainFormService.SetStatusBarText($"Всего пользователей: {userCounts}");
+        }
+
+        //для улучшения отрисовки большого кол-ва строк грида
+        void SetDoubleBuffered(Control c, bool value)
+        {
+            PropertyInfo pi = typeof(Control).GetProperty("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic);
+            if (pi != null)
+            {
+                pi.SetValue(c, value, null);
+
+                MethodInfo mi = typeof(Control).GetMethod("SetStyle", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
+                if (mi != null)
+                {
+                    mi.Invoke(c, new object[] { ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true });
+                }
+
+                mi = typeof(Control).GetMethod("UpdateStyles", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
+                if (mi != null)
+                {
+                    mi.Invoke(c, null);
+                }
+            }
+        }
+
+        async Task RefreshGridUsers()
+        {
+            var rowsPerPage = GetRowsPerPageSelected();
+            var pageNum = GetSelectedPageNum();
+            if (pageNum == null)
+                return;
+
+            await UpdateDataGridUsersAsync((int)pageNum, rowsPerPage);
+        }
+
+        int GetRowsPerPageSelected()
+        {
+            if (cbxRowsPerPage.Items.Count == 0)
+                cbxRowsPerPage.Items.AddRange(CbxItem.GetRowsPerPageItems());
+            if (cbxRowsPerPage.SelectedIndex == -1)
+                cbxRowsPerPage.SelectedIndex = 0;
+            var item = cbxRowsPerPage.SelectedItem  as CbxItem;
+            return item.Value;
+        }
+
+        public class CbxItem
+        {
+            public string Text { get; set; }
+            public int Value { get; set; }
+
+            public CbxItem() { }
+            public CbxItem(string text, int value)
+            {
+                Text = text;
+                Value = value;
+            }
+
+            public override string ToString()
+            {
+                return Text;
+            }
+
+            public static CbxItem[] GetRowsPerPageItems()
+            {
+                return new CbxItem[]
+                {
+                    new CbxItem("10", 10),
+                    new CbxItem("30", 30),
+                    new CbxItem("50", 50),
+                    new CbxItem("100", 100),
+                    new CbxItem("300", 300)
+                };
+            }
+        }
 
         //--------------------------------------------
         //------           AIRPLANES           -----

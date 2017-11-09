@@ -40,11 +40,15 @@ namespace CourseWork
             SetView(ServiceLocator.Create<LoginView>());
         }
 
+        public static void SetStatusBarText(string text)
+        {
+            mainForm.SetStatus(text);
+        }
+
         public static void ShowAppView(User user)
         {
             appUser = user;
-            var viewApp = new AppView();
-            SetView(viewApp);
+            SetView(ServiceLocator.Create<AppView>());
             MainForm.WindowState = FormWindowState.Maximized;
         }
 
@@ -57,8 +61,8 @@ namespace CourseWork
         static void SetView(UserControl view)
         {
             view = StyleControl(view);
-            mainForm.Controls.Clear();
-            mainForm.Controls.Add(view);
+            mainForm.HostControl.Clear();
+            mainForm.HostControl.Add(view);
         }
 
         public static void ShowError(string error)
