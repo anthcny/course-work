@@ -595,6 +595,10 @@ namespace CourseWork.Views
 
         private void ShowQuantityCargoForAirplane()
         {
+            if (cbx1.SelectedIndex == -1
+                || cbx2.SelectedIndex == -1)
+                return;
+
             var airplane = cbx1.Items[cbx1.SelectedIndex] as Airplane;
             var cargo = cbx2.Items[cbx2.SelectedIndex] as Cargo;
 
@@ -639,6 +643,9 @@ namespace CourseWork.Views
 
         private void CargosTransportedToAirportOnAirplanes()
         {
+            if (cbx1.SelectedIndex == -1)
+                return;
+
             var airport = cbx1.Items[cbx1.SelectedIndex] as Airport;
             if (addedPlanes.Count == 0) return;
             var traffics = db.Traffics
@@ -671,6 +678,9 @@ namespace CourseWork.Views
         
         private void AddPlaneToListBox()
         {
+            if (cbx2.SelectedIndex == -1)
+                return;
+  
             var airplane = cbx2.Items[cbx2.SelectedIndex] as Airplane;
             if (!listBox2.Items.Contains(airplane))
             {
@@ -688,15 +698,17 @@ namespace CourseWork.Views
 
         private void TransportedCargos()
         {
-            var cargos = db.Cargoes
-                .Where(c => c.Traffics.Count != 0 )
-                .ToList();
+            var query = db.Cargoes.Where(c => c.Traffics.Count != 0);
+            var cargos = query.ToList();
 
             cargos.ForEach(c => listBox1.Items.Add(c.ToString()));
         }
 
         private void AirplanesDidntTransportToThisAirport()
         {
+            if (cbx1.SelectedIndex == -1)
+                return;
+
             var airport = cbx1.Items[cbx1.SelectedIndex] as Airport;
 
             var ids = db.Traffics

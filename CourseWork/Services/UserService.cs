@@ -17,6 +17,15 @@ namespace CourseWork.Services
             return new UserService();
         }
 
+        public void Load()
+        {
+            UseDb(db => 
+            {
+                db.Users.Load();
+                return 0; //надо для generic метода возвратить чтонибудь кроме (не void)
+            });
+        }
+
         async public Task<List<User>> GetUsers(Expression<Func<User, bool>> predicate = null)
         {
             return await UseDb(async db => 
@@ -35,8 +44,10 @@ namespace CourseWork.Services
 
         async public Task<bool> CheckLoginUser(string login, string pass)
         {
-            var user = await UseDb(async db => await db.Users.FirstOrDefaultAsync(u => u.Login == login && u.Password == pass));
-            return user != null;
+            return await UseDb(async db =>
+                await db.Users
+                        .AnyAsync(u => u.Login == login && u.Password == pass)
+            );
         }
 
         async public Task<User> GetUserByLogin(string login)

@@ -44,6 +44,7 @@ namespace CourseWork
             appUser = user;
             var viewApp = new AppView();
             SetView(viewApp);
+            MainForm.WindowState = FormWindowState.Maximized;
         }
 
         static UserControl StyleControl(UserControl control)

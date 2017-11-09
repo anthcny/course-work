@@ -81,9 +81,9 @@
             this.tabQueries = new System.Windows.Forms.TabPage();
             this.panel14 = new System.Windows.Forms.Panel();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.lbl2 = new System.Windows.Forms.Label();
             this.panel13 = new System.Windows.Forms.Panel();
             this.btnDeleteFromListBox2 = new System.Windows.Forms.Button();
+            this.lbl2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddPlane = new System.Windows.Forms.Button();
             this.cbx2 = new System.Windows.Forms.ComboBox();
@@ -253,10 +253,10 @@
             // panel8
             // 
             this.panel8.Controls.Add(this.dataGridAirports);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(3, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(480, 441);
+            this.panel8.Size = new System.Drawing.Size(477, 441);
             this.panel8.TabIndex = 1;
             // 
             // dataGridAirports
@@ -266,7 +266,7 @@
             this.dataGridAirports.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridAirports.Location = new System.Drawing.Point(0, 0);
             this.dataGridAirports.Name = "dataGridAirports";
-            this.dataGridAirports.Size = new System.Drawing.Size(480, 441);
+            this.dataGridAirports.Size = new System.Drawing.Size(477, 441);
             this.dataGridAirports.TabIndex = 0;
             // 
             // panel7
@@ -491,10 +491,10 @@
             // panel6
             // 
             this.panel6.Controls.Add(this.dataGridaCargos);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(504, 447);
+            this.panel6.Size = new System.Drawing.Size(499, 447);
             this.panel6.TabIndex = 1;
             // 
             // dataGridaCargos
@@ -505,7 +505,7 @@
             this.dataGridaCargos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridaCargos.Location = new System.Drawing.Point(0, 0);
             this.dataGridaCargos.Name = "dataGridaCargos";
-            this.dataGridaCargos.Size = new System.Drawing.Size(504, 447);
+            this.dataGridaCargos.Size = new System.Drawing.Size(499, 447);
             this.dataGridaCargos.TabIndex = 0;
             // 
             // panel5
@@ -630,29 +630,21 @@
             // panel14
             // 
             this.panel14.Controls.Add(this.listBox1);
-            this.panel14.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel14.Location = new System.Drawing.Point(0, 47);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(478, 400);
+            this.panel14.Size = new System.Drawing.Size(484, 400);
             this.panel14.TabIndex = 3;
             // 
             // listBox1
             // 
             this.listBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(0, 0);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(475, 400);
+            this.listBox1.Size = new System.Drawing.Size(484, 400);
             this.listBox1.TabIndex = 0;
-            // 
-            // lbl2
-            // 
-            this.lbl2.AutoSize = true;
-            this.lbl2.Location = new System.Drawing.Point(3, 55);
-            this.lbl2.Name = "lbl2";
-            this.lbl2.Size = new System.Drawing.Size(0, 13);
-            this.lbl2.TabIndex = 3;
             // 
             // panel13
             // 
@@ -664,9 +656,10 @@
             this.panel13.Controls.Add(this.listBox2);
             this.panel13.Controls.Add(this.lbl1);
             this.panel13.Controls.Add(this.cbx1);
+            this.panel13.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel13.Location = new System.Drawing.Point(484, 47);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(221, 335);
+            this.panel13.Size = new System.Drawing.Size(221, 400);
             this.panel13.TabIndex = 2;
             // 
             // btnDeleteFromListBox2
@@ -679,6 +672,14 @@
             this.btnDeleteFromListBox2.UseVisualStyleBackColor = true;
             this.btnDeleteFromListBox2.Visible = false;
             this.btnDeleteFromListBox2.Click += new System.EventHandler(this.btnDeleteFromListBox2_Click);
+            // 
+            // lbl2
+            // 
+            this.lbl2.AutoSize = true;
+            this.lbl2.Location = new System.Drawing.Point(3, 55);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(0, 13);
+            this.lbl2.TabIndex = 3;
             // 
             // label3
             // 

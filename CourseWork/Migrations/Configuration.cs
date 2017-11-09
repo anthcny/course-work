@@ -6,7 +6,7 @@ namespace CourseWork.Migrations
     using System.Linq;
     using Dal;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<CourseWork.Dal.CourseWorkDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CourseWorkDbContext>
     {
         public Configuration()
         {
@@ -15,8 +15,6 @@ namespace CourseWork.Migrations
 
         protected override void Seed(CourseWorkDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
             context.Users.AddOrUpdate(
                 u => u.Login,
                 new User

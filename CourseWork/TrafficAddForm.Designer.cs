@@ -177,6 +177,7 @@
             this.Controls.Add(this.lblAirplane);
             this.Controls.Add(this.cbxAirplanes);
             this.Name = "TrafficAddForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrafficAdd";
             this.ResumeLayout(false);
             this.PerformLayout();

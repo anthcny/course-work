@@ -19,6 +19,13 @@ namespace CourseWork.Views
             InitializeComponent();
 
             this.btnEnter.Click += async (object sender, EventArgs e) => await LoginUser();
+            KeyEventHandler enterHandler = async (sender, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                    await LoginUser();
+            };
+            this.txtLogin.KeyDown += enterHandler;
+            this.txtPassword.KeyDown += enterHandler;
         }
 
         UserService userService { get { return UserService.Get(); } }
@@ -35,7 +42,7 @@ namespace CourseWork.Views
                 {
                     MainFormService.ShowAppView(
                         await userService.GetUserByLogin(login)
-                    );
+                    );                    
                 }
                 else
                 {

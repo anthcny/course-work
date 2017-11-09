@@ -19,7 +19,7 @@ namespace CourseWork
         {           
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
+            UserService.Get().Load();
             MainFormService.ShowLoginView();
             //MainFormService.ShowAppView(new User());
             Application.Run(MainFormService.MainForm);            

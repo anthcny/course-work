@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(761, 431);
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CourseWork";
             this.ResumeLayout(false);
 
