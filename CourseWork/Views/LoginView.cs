@@ -11,12 +11,17 @@ using System.Windows.Forms;
 namespace CourseWork.Views
 {
     using Services;
+    using Services.Contracts;
 
     public partial class LoginView : UserControl
     {
-        public LoginView()
+        private IUserService userService;
+
+        public LoginView(IUserService userService)
         {
             InitializeComponent();
+
+            this.userService = userService;
 
             this.btnEnter.Click += async (object sender, EventArgs e) => await LoginUser();
             KeyEventHandler enterHandler = async (sender, e) =>
@@ -27,8 +32,6 @@ namespace CourseWork.Views
             this.txtLogin.KeyDown += enterHandler;
             this.txtPassword.KeyDown += enterHandler;
         }
-
-        UserService userService { get { return UserService.Get(); } }
 
         async Task LoginUser()
         {

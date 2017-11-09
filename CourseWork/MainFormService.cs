@@ -9,6 +9,8 @@ namespace CourseWork
 {
     using Views;
     using Dal;
+    using IoC;
+    using Services;
 
     static class MainFormService
     {
@@ -35,8 +37,7 @@ namespace CourseWork
 
         public static void ShowLoginView()
         {
-            var viewLogin = new LoginView();
-            SetView(viewLogin);
+            SetView(ServiceLocator.Create<LoginView>());
         }
 
         public static void ShowAppView(User user)

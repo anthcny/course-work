@@ -9,8 +9,9 @@ using System.Data.Entity;
 namespace CourseWork.Services
 {
     using Dal;
+    using Contracts;
 
-    class UserService: BaseService
+    class UserService: BaseService, IUserService
     {
         public static UserService Get()
         {
