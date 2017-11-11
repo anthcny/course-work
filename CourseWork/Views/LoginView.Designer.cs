@@ -35,6 +35,7 @@
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.chkIsLdap = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +50,7 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.groupBox1.Controls.Add(this.chkIsLdap);
             this.groupBox1.Controls.Add(this.btnEnter);
             this.groupBox1.Controls.Add(this.txtPassword);
             this.groupBox1.Controls.Add(this.txtLogin);
@@ -101,6 +103,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Логин:";
             // 
+            // chkIsLdap
+            // 
+            this.chkIsLdap.AutoSize = true;
+            this.chkIsLdap.Location = new System.Drawing.Point(76, 75);
+            this.chkIsLdap.Name = "chkIsLdap";
+            this.chkIsLdap.Size = new System.Drawing.Size(54, 17);
+            this.chkIsLdap.TabIndex = 5;
+            this.chkIsLdap.Text = "LDAP";
+            this.chkIsLdap.UseVisualStyleBackColor = true;
+            // 
             // LoginView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,5 +136,6 @@
         private System.Windows.Forms.TextBox txtLogin;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox chkIsLdap;
     }
 }

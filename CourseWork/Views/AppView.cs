@@ -16,6 +16,8 @@ namespace CourseWork.Views
     using System.Data.Entity;
     using Faker;
     using System.Reflection;
+    using System.IO;
+    using System.Runtime;
 
     public partial class AppView : UserControl
     {
@@ -49,35 +51,135 @@ namespace CourseWork.Views
             btnGrUsersRefresh.Click += async (s, a) => await RefreshGridUsers();
 
             cbxPageNum.SelectedIndexChanged += async (s, a) => await RefreshGridUsers();
-            cbxRowsPerPage.SelectedIndexChanged += async (s, a) => {
-                await UpdateUserGridPages(
-                    GetRowsPerPageSelected()
-                );
-                cbxPageNum.SelectedIndex = 0;
-                await RefreshGridUsers();
+            cbxRowsPerPage.SelectedIndexChanged += (s, a) => {
+                GetUserCount(async userCounts => {
+                    UpdateUserGridPages(GetRowsPerPageSelected(), userCounts);
+                    cbxPageNum.SelectedIndex = 0;
+                    await RefreshGridUsers();
+                });
             };
 
             btnGrAddFakeUsers.Click += (s, a) => AddFakeUsers();
+            btnExportCSV.Click += (s, a) => ExportUsersToCsvFile();
 
             InitGridUsers();
+        }
+
+        void WriteUsersToCsvFile(string fileName, List<User> users)
+        {
+            using (FileStream fs = new FileStream(fileName, FileMode.Append, FileAccess.Write))
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                var delimiter = ";";
+                users.ForEach(u => {
+                    var vals = new object[] { u.Id, u.Name, u.Login, u.Password, u.CreatedAt?.ToString() };
+                    var line = string.Join(delimiter, vals);
+                    sw.WriteLine(line);
+                });
+            }
+        }
+
+        //запускаем сборку мусора для очистки памяти
+        void GarbageCollect()
+        {
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            GC.Collect();
+        }
+
+        private void ExportUsersToCsvFile()
+        {
+            var saveFileDialog = new SaveFileDialog()
+            {
+                DefaultExt = "csv",
+                AddExtension = true,
+                Filter = "CSV файлы (*.csv)|*.csv"
+            };
+            var dr = saveFileDialog.ShowDialog(this);
+            if (dr == DialogResult.OK)
+            {
+                var fileName = saveFileDialog.FileName;
+                var chunkSize = GetRowsPerPageSelected();
+                var isOnePart = chkAll.Checked;
+
+                File.Delete(fileName);
+
+                var bg = new BackgroundWorker() { WorkerReportsProgress = true };
+                bg.DoWork += async (s, a) =>
+                {
+                    var worker = s as BackgroundWorker;
+                    a.Result = new { Error = "", Completed = false };
+                    try
+                    {
+                        //все за один раз
+                        if (isOnePart)
+                        {
+                            var users = await UserService.GetUsers();
+                            WriteUsersToCsvFile(fileName, users);
+                        }
+                        else
+                        {
+                            var userCounts = await UserService.GetUsersCountAsync();
+
+                            var chunksCount = GetPagesCount(chunkSize, userCounts);
+
+                            for (var i = 1; i <= chunksCount; i++)
+                            {
+                                var users = await UserService.SkipTakeUsersAsync((i - 1) * chunkSize, chunkSize);
+
+                                WriteUsersToCsvFile(fileName, users);
+
+                                var part = (double)i / chunksCount;
+                                worker.ReportProgress((int)(part * 100));
+                            }
+                        }
+                        
+
+                        a.Result = new { Error = "", Completed = true };
+                    }
+                    catch (Exception ex)
+                    {
+                        a.Result = new { Error = ex.Message, Completed = false };
+                    }
+                };
+                bg.ProgressChanged += (s, a) =>
+                {
+                    MainFormService.SetStatusBarText($"Экспорт...{a.ProgressPercentage}%");
+                    GarbageCollect();
+                };
+                bg.RunWorkerCompleted += (s, a) =>
+                {
+                    var isOk = (bool)((dynamic)a.Result).Completed;
+                    if (isOk)
+                    {
+                        MainFormService.ShowInfo("Экспорт CSV завершен!");
+                    } else
+                    {
+                        MainFormService.ShowError($"Ошибка экспорта CSV. {((dynamic)a.Result).Error}");
+                    }
+                };
+                bg.RunWorkerAsync();
+            }
         }
 
         void AddFakeUsers()
         {
             SetLoadingStatus();
+            btnGrAddFakeUsers.Enabled = false;
             var bgWorker = new BackgroundWorker();
             bgWorker.DoWork += async (s, a) =>
             {
                 var crypto = CryptoService.Get();
-                var users = new Faker<User>().CreateMany(3333, user => {
+                var users = new Faker<User>().CreateMany(5000, user => {
                     user.Password = crypto.GetMd5Hash(user.Login);
                 });
                 await UserService.AddUsers(users);
             };
-            bgWorker.RunWorkerCompleted += async (s, a) =>
+            bgWorker.RunWorkerCompleted += (s, a) =>
             {
+                btnGrAddFakeUsers.Enabled = true;
                 SetLoadingStatus(false);
-                await UpdateTabUsersAsync();
+                UpdateTabUsersAsync();
+                GarbageCollect();
             };
             bgWorker.RunWorkerAsync();
         }
@@ -116,57 +218,78 @@ namespace CourseWork.Views
             else if (this.tabTraffic == tab)
                 await ShowTraffic();
             else if (this.tabUsers == tab)
-                await UpdateTabUsersAsync();
+                UpdateTabUsersAsync();
         }
 
         //--------------------------------------------
         //------           USERS           -----
         //--------------------------------------------
 
-        enum UserGridColumns
-        {
-            Id, Name, Login, Pass, Created 
-        } 
-
         void InitGridUsers()
         {
             usersGrid.ColumnCount = 5;
             usersGrid.Columns[0].Name = "Идентификатор";
-            usersGrid.Columns[0].Tag = UserGridColumns.Id;
             usersGrid.Columns[1].Name = "Имя";
-            usersGrid.Columns[1].Tag = UserGridColumns.Name;
             usersGrid.Columns[2].Name = "Логин";
-            usersGrid.Columns[2].Tag = UserGridColumns.Login;
             usersGrid.Columns[3].Name = "Пароль";
-            usersGrid.Columns[3].Tag = UserGridColumns.Pass;
             usersGrid.Columns[4].Name = "Дата создания";
-            usersGrid.Columns[4].Tag = UserGridColumns.Created;
 
             SetDoubleBuffered(usersGrid, true);
         }
 
-        public async Task UpdateTabUsersAsync()
+        public void UpdateTabUsersAsync()
         {
-            await UpdateUserGridPages(
-                GetRowsPerPageSelected()
-            );
-            cbxPageNum.SelectedIndex = 0;
+            //await UpdateUserGridPages(
+            //    GetRowsPerPageSelected()
+            //);
+            //cbxPageNum.SelectedIndex = 0;
+            //делаем через фоновый поток - чтобы убрать торможения отрисовки при переключении на вкладку юзеров
+
+            SetLoadingStatus();
+            var rowsPerPage = GetRowsPerPageSelected();
+
+            GetUserCount(userCounts => {
+                UpdateUserGridPages(rowsPerPage, userCounts);
+                cbxPageNum.SelectedIndex = 0;
+            });
+            GarbageCollect();
         }
 
-        async Task UpdateUserGridPages(int rowsPerPage)
+        void GetUserCount(Action<int> callback)
         {
-            var userCounts = await UserService.GetUsersCountAsync();
+            var bgWorker = new BackgroundWorker();
+            bgWorker.DoWork += async (s, a) =>
+            {
+                var userCounts = await UserService.GetUsersCountAsync();
+                a.Result = new
+                {
+                    userCounts = userCounts
+                };
+            };
+            bgWorker.RunWorkerCompleted += (s, a) =>
+            {
+                callback(((dynamic)a.Result).userCounts);
+            };
+            bgWorker.RunWorkerAsync();
+        }
+
+        void UpdateUserGridPages(int rowsPerPage, int userCounts)
+        {
             MainFormService.SetStatusBarText($"Всего пользователей: {userCounts}");
 
-            var pageCount =
-                userCounts == 0
-                ? 1
-                : (userCounts % rowsPerPage) == 0
-                    ? userCounts / rowsPerPage
-                    : (userCounts / rowsPerPage) + 1;
+            var pageCount = GetPagesCount(rowsPerPage, userCounts);
             cbxPageNum.Items.Clear();
             Enumerable.Range(1, pageCount).ToList()
                 .ForEach(p => cbxPageNum.Items.Add(new CbxItem(p.ToString(), p)));
+        }
+
+        int GetPagesCount(int rowsPerPage, int userCounts)
+        {
+            return userCounts == 0
+                    ? 1
+                    : (userCounts % rowsPerPage) == 0
+                        ? userCounts / rowsPerPage
+                        : (userCounts / rowsPerPage) + 1;
         }
 
         int? GetSelectedPageNum() => (cbxPageNum.SelectedItem as CbxItem)?.Value;
@@ -181,26 +304,6 @@ namespace CourseWork.Views
             SetLoadingStatus();
             var users = await UserService.SkipTakeUsersAsync((pageNum - 1) * rowsPerPage, rowsPerPage);
             usersGrid.Rows.Clear();
-            //users.ForEach(user =>
-            //{
-            //    //var dgr = new DataGridViewRow();
-            //    //dgr.CreateCells(
-            //    //    usersGrid,
-            //    //    user.Id,
-            //    //    user.Name,
-            //    //    user.Login,
-            //    //    user.Password,
-            //    //    user.CreatedAt?.ToString()
-            //    //);
-            //    usersGrid.Rows.Add(new object[] 
-            //    {
-            //        user.Id,
-            //        user.Name,
-            //        user.Login,
-            //        user.Password,
-            //        user.CreatedAt?.ToString()
-            //    });
-            //});
             var rows = users.Select(user =>
             {
                 var dgr = new DataGridViewRow();
@@ -217,6 +320,7 @@ namespace CourseWork.Views
             usersGrid.Rows.AddRange(rows);
             var userCounts = await UserService.GetUsersCountAsync();
             MainFormService.SetStatusBarText($"Всего пользователей: {userCounts}");
+            GarbageCollect();
         }
 
         //для улучшения отрисовки большого кол-ва строк грида
@@ -283,10 +387,12 @@ namespace CourseWork.Views
                 return new CbxItem[]
                 {
                     new CbxItem("10", 10),
-                    new CbxItem("30", 30),
+                    new CbxItem("25", 25),
                     new CbxItem("50", 50),
                     new CbxItem("100", 100),
-                    new CbxItem("300", 300)
+                    new CbxItem("300", 300),
+                    new CbxItem("1000", 1000),
+                    new CbxItem("2000", 2000),
                 };
             }
         }

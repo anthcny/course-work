@@ -104,6 +104,8 @@
             this.cbxPageNum = new System.Windows.Forms.ComboBox();
             this.cbxRowsPerPage = new System.Windows.Forms.ComboBox();
             this.btnGrUsersRefresh = new System.Windows.Forms.Button();
+            this.btnExportCSV = new System.Windows.Forms.Button();
+            this.chkAll = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
@@ -828,6 +830,8 @@
             // 
             // panel15
             // 
+            this.panel15.Controls.Add(this.chkAll);
+            this.panel15.Controls.Add(this.btnExportCSV);
             this.panel15.Controls.Add(this.btnGrAddFakeUsers);
             this.panel15.Controls.Add(this.label5);
             this.panel15.Controls.Add(this.label4);
@@ -846,7 +850,7 @@
             this.btnGrAddFakeUsers.Name = "btnGrAddFakeUsers";
             this.btnGrAddFakeUsers.Size = new System.Drawing.Size(75, 23);
             this.btnGrAddFakeUsers.TabIndex = 5;
-            this.btnGrAddFakeUsers.Text = "+3333";
+            this.btnGrAddFakeUsers.Text = "+5000 чел.";
             this.btnGrAddFakeUsers.UseVisualStyleBackColor = true;
             // 
             // label5
@@ -895,6 +899,25 @@
             this.btnGrUsersRefresh.TabIndex = 0;
             this.btnGrUsersRefresh.Text = "Обновить";
             this.btnGrUsersRefresh.UseVisualStyleBackColor = true;
+            // 
+            // btnExportCSV
+            // 
+            this.btnExportCSV.Location = new System.Drawing.Point(165, 3);
+            this.btnExportCSV.Name = "btnExportCSV";
+            this.btnExportCSV.Size = new System.Drawing.Size(89, 23);
+            this.btnExportCSV.TabIndex = 6;
+            this.btnExportCSV.Text = "Экспорт CSV";
+            this.btnExportCSV.UseVisualStyleBackColor = true;
+            // 
+            // chkAll
+            // 
+            this.chkAll.AutoSize = true;
+            this.chkAll.Location = new System.Drawing.Point(260, 7);
+            this.chkAll.Name = "chkAll";
+            this.chkAll.Size = new System.Drawing.Size(97, 17);
+            this.chkAll.TabIndex = 7;
+            this.chkAll.Text = "Не порционно";
+            this.chkAll.UseVisualStyleBackColor = true;
             // 
             // AppView
             // 
@@ -1019,5 +1042,7 @@
         private System.Windows.Forms.ComboBox cbxRowsPerPage;
         private System.Windows.Forms.Button btnGrUsersRefresh;
         private System.Windows.Forms.Button btnGrAddFakeUsers;
+        private System.Windows.Forms.Button btnExportCSV;
+        private System.Windows.Forms.CheckBox chkAll;
     }
 }

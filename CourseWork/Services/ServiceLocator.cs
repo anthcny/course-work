@@ -23,9 +23,11 @@ namespace CourseWork.Services
             return Kernel.Instance.Get<IUserService>();
         }
 
-        public static T Create<T>()
+        public static T Create<T>(string named = null)
         {
-            return Kernel.Instance.Get<T>();
+            return named == null
+                ? Kernel.Instance.Get<T>()
+                : Kernel.Instance.Get<T>(named);
         }
     }
 }

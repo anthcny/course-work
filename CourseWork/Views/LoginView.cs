@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace CourseWork.Views
 {
+    using Ninject;
     using Services;
     using Services.Contracts;
 
@@ -40,7 +41,9 @@ namespace CourseWork.Views
                 var login = this.txtLogin.Text.Trim();
                 var pass = this.txtPassword.Text.Trim();
 
-                var isUserExist = await userService.CheckLoginUser(login, pass);
+                var named = chkIsLdap.Checked ? "auth-ldap" : "auth-table";
+                var authService = ServiceLocator.Create<IAuthService>(named);
+                var isUserExist = authService.IsValidUser(login, pass);//await userService.CheckLoginUser(login, pass);
                 if (isUserExist)
                 {
                     MainFormService.ShowAppView(

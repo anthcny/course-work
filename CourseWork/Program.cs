@@ -22,10 +22,10 @@ namespace CourseWork
             Application.SetCompatibleTextRenderingDefault(false);
 
             Kernel.LoadKernel();
-            ServiceLocator.GetUserService().Load();
+            //ServiceLocator.GetUserService().Load();
 
-            //MainFormService.ShowLoginView();
-            MainFormService.ShowAppView(new User());
+            MainFormService.ShowLoginView();
+            //MainFormService.ShowAppView(new User());
 
             Application.Run(MainFormService.MainForm);            
         }
