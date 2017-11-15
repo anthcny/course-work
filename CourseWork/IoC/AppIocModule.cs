@@ -19,7 +19,7 @@ namespace CourseWork.IoC
             Bind<LoginView>().ToSelf();
             Bind<ExcelService>().ToSelf();
             Bind<AppView>().ToSelf();
-            Bind<IAuthService>().To<AuthService>().Named("auth-table");
+            Bind<IAuthService>().To<AuthService>().Named("auth-table"); // контекстный биндинг (связывание key : value)
             Bind<IAuthService>().To<AuthLdapService>().Named("auth-ldap");
         }
     }

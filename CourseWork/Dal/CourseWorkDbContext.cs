@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace CourseWork.Dal //Data Access Layer
 {
+    //контекст инкапсулирует работу с БД
+    
     public class CourseWorkDbContext: DbContext
     {
+        //таблица юзеров (набор строк сущностей User)
         public DbSet<User> Users { get; set; }
 
         public DbSet<Airplane> Airplanes { get; set; }
@@ -19,6 +22,8 @@ namespace CourseWork.Dal //Data Access Layer
 
         public DbSet<Cargo> Cargoes { get; set; }
 
+        //создание контекста -  в бахзовый класс передается имя подключения
+        //имя подключения прописано в конфиге
         public CourseWorkDbContext(): base("DefaultConnection")
         {
         }

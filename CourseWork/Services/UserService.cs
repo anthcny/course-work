@@ -71,6 +71,9 @@ namespace CourseWork.Services
             return await UseDb(async db => await db.Users.CountAsync());
         }
 
+        //для грида - получить срез данных на страницу
+        //skip - пропустить n записей
+        //take - взять n записей
         public async Task<List<User>> SkipTakeUsersAsync(int skip, int take)
         {
             return await UseDb(

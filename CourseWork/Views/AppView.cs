@@ -41,6 +41,7 @@ namespace CourseWork.Views
             this.Disposed += (sender, args) => db.Dispose();
 
             this.tabControlAirplanes.Selected += async (sender, args) => await ShowTab(args.TabPage);
+            
             this.btnDeleteTraffic.Click += async (s, a) => await DeleteTraffic();
 
             this.Load += async (s, a) => await ShowTab(this.tabControlAirplanes.SelectedTab);
@@ -169,7 +170,7 @@ namespace CourseWork.Views
             bgWorker.DoWork += async (s, a) =>
             {
                 var crypto = CryptoService.Get();
-                var users = new Faker<User>().CreateMany(5000, user => {
+                var users = new Faker<User>().CreateMany(10000, user => {
                     user.Password = crypto.GetMd5Hash(user.Login);
                 });
                 await UserService.AddUsers(users);
@@ -219,6 +220,8 @@ namespace CourseWork.Views
                 await ShowTraffic();
             else if (this.tabUsers == tab)
                 UpdateTabUsersAsync();
+            else if (this.tabTrafficTable == tab)
+                ShowTrafficGrid();
         }
 
         //--------------------------------------------
@@ -858,6 +861,37 @@ namespace CourseWork.Views
         //------          TRAFFICS             -----
         //--------------------------------------------
 
+
+        async Task ShowTrafficGrid()
+        {
+            //await db.Traffics.LoadAsync();
+            //dataGridTraffics.DataSource = db.Traffics.Local.ToBindingList();
+            //dataGridTraffics.Refresh();
+            dataGridTraffics.Rows.Clear();
+            dataGridTraffics.Columns.Add("Airplane","Самолет");
+            dataGridTraffics.Columns.Add("From","Откуда");
+            dataGridTraffics.Columns.Add("To", "Куда");
+            dataGridTraffics.Columns.Add("Cargoes", "Грузы");
+
+            var traffics = await db.Traffics
+                .Include(t => t.Cargos)
+                .ToListAsync();
+
+            traffics.ForEach(traffic =>
+            {
+                var from = db.Airports.FirstOrDefault(a => a.Id == traffic.IdAirportFrom);
+                var to = db.Airports.FirstOrDefault(a => a.Id == traffic.IdAirportTo);
+                var airplane = db.Airplanes.FirstOrDefault(a => a.Id == traffic.IdAirplane);
+                var listCargoes = traffic.Cargos.ToList();
+                object[] data = new object[4];
+                data[0] = airplane.Name.ToString();
+                data[1] = from.City.ToString();
+                data[2] = to.City.ToString();
+                data[3] = string.Join("-", listCargoes.Select(cargo => cargo.ToString()));
+                dataGridTraffics.Rows.Add(data);
+            });
+            dataGridTraffics.Refresh();
+        }
 
         async Task ShowTraffic()
         {

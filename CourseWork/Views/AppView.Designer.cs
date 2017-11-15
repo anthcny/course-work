@@ -98,14 +98,16 @@
             this.panel16 = new System.Windows.Forms.Panel();
             this.usersGrid = new System.Windows.Forms.DataGridView();
             this.panel15 = new System.Windows.Forms.Panel();
+            this.chkAll = new System.Windows.Forms.CheckBox();
+            this.btnExportCSV = new System.Windows.Forms.Button();
             this.btnGrAddFakeUsers = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cbxPageNum = new System.Windows.Forms.ComboBox();
             this.cbxRowsPerPage = new System.Windows.Forms.ComboBox();
             this.btnGrUsersRefresh = new System.Windows.Forms.Button();
-            this.btnExportCSV = new System.Windows.Forms.Button();
-            this.chkAll = new System.Windows.Forms.CheckBox();
+            this.tabTrafficTable = new System.Windows.Forms.TabPage();
+            this.dataGridTraffics = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControlAirplanes.SuspendLayout();
@@ -133,6 +135,8 @@
             this.panel16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.usersGrid)).BeginInit();
             this.panel15.SuspendLayout();
+            this.tabTrafficTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridTraffics)).BeginInit();
             this.SuspendLayout();
             // 
             // loginName
@@ -182,6 +186,7 @@
             this.tabControlAirplanes.Controls.Add(this.tabCargos);
             this.tabControlAirplanes.Controls.Add(this.tabQueries);
             this.tabControlAirplanes.Controls.Add(this.tabUsers);
+            this.tabControlAirplanes.Controls.Add(this.tabTrafficTable);
             this.tabControlAirplanes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlAirplanes.Location = new System.Drawing.Point(0, 0);
             this.tabControlAirplanes.Name = "tabControlAirplanes";
@@ -844,6 +849,25 @@
             this.panel15.Size = new System.Drawing.Size(705, 31);
             this.panel15.TabIndex = 0;
             // 
+            // chkAll
+            // 
+            this.chkAll.AutoSize = true;
+            this.chkAll.Location = new System.Drawing.Point(260, 7);
+            this.chkAll.Name = "chkAll";
+            this.chkAll.Size = new System.Drawing.Size(97, 17);
+            this.chkAll.TabIndex = 7;
+            this.chkAll.Text = "Не порционно";
+            this.chkAll.UseVisualStyleBackColor = true;
+            // 
+            // btnExportCSV
+            // 
+            this.btnExportCSV.Location = new System.Drawing.Point(165, 3);
+            this.btnExportCSV.Name = "btnExportCSV";
+            this.btnExportCSV.Size = new System.Drawing.Size(89, 23);
+            this.btnExportCSV.TabIndex = 6;
+            this.btnExportCSV.Text = "Экспорт CSV";
+            this.btnExportCSV.UseVisualStyleBackColor = true;
+            // 
             // btnGrAddFakeUsers
             // 
             this.btnGrAddFakeUsers.Location = new System.Drawing.Point(84, 3);
@@ -900,24 +924,26 @@
             this.btnGrUsersRefresh.Text = "Обновить";
             this.btnGrUsersRefresh.UseVisualStyleBackColor = true;
             // 
-            // btnExportCSV
+            // tabTrafficTable
             // 
-            this.btnExportCSV.Location = new System.Drawing.Point(165, 3);
-            this.btnExportCSV.Name = "btnExportCSV";
-            this.btnExportCSV.Size = new System.Drawing.Size(89, 23);
-            this.btnExportCSV.TabIndex = 6;
-            this.btnExportCSV.Text = "Экспорт CSV";
-            this.btnExportCSV.UseVisualStyleBackColor = true;
+            this.tabTrafficTable.Controls.Add(this.dataGridTraffics);
+            this.tabTrafficTable.Location = new System.Drawing.Point(4, 22);
+            this.tabTrafficTable.Name = "tabTrafficTable";
+            this.tabTrafficTable.Size = new System.Drawing.Size(705, 447);
+            this.tabTrafficTable.TabIndex = 6;
+            this.tabTrafficTable.Text = "Перевозки (таблица)";
+            this.tabTrafficTable.UseVisualStyleBackColor = true;
             // 
-            // chkAll
+            // dataGridTraffics
             // 
-            this.chkAll.AutoSize = true;
-            this.chkAll.Location = new System.Drawing.Point(260, 7);
-            this.chkAll.Name = "chkAll";
-            this.chkAll.Size = new System.Drawing.Size(97, 17);
-            this.chkAll.TabIndex = 7;
-            this.chkAll.Text = "Не порционно";
-            this.chkAll.UseVisualStyleBackColor = true;
+            this.dataGridTraffics.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridTraffics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridTraffics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridTraffics.GridColor = System.Drawing.SystemColors.ButtonFace;
+            this.dataGridTraffics.Location = new System.Drawing.Point(0, 0);
+            this.dataGridTraffics.Name = "dataGridTraffics";
+            this.dataGridTraffics.Size = new System.Drawing.Size(705, 447);
+            this.dataGridTraffics.TabIndex = 0;
             // 
             // AppView
             // 
@@ -960,6 +986,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.usersGrid)).EndInit();
             this.panel15.ResumeLayout(false);
             this.panel15.PerformLayout();
+            this.tabTrafficTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridTraffics)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1044,5 +1072,7 @@
         private System.Windows.Forms.Button btnGrAddFakeUsers;
         private System.Windows.Forms.Button btnExportCSV;
         private System.Windows.Forms.CheckBox chkAll;
+        private System.Windows.Forms.TabPage tabTrafficTable;
+        private System.Windows.Forms.DataGridView dataGridTraffics;
     }
 }
