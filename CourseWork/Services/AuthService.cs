@@ -17,11 +17,9 @@ namespace CourseWork.Services
             UserSrv = userSrv;
         }
 
-        public bool IsValidUser(string login, string password)
+        public async Task<bool> IsValidUser(string login, string password)
         {
-            var task = UserSrv.CheckLoginUser(login, password);
-            Task.WaitAll(task);
-            return task.Result;
+            return await UserSrv.CheckLoginUser(login, password);
         }
     }
 }

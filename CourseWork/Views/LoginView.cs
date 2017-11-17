@@ -43,7 +43,7 @@ namespace CourseWork.Views
 
                 var named = chkIsLdap.Checked ? "auth-ldap" : "auth-table";
                 var authService = ServiceLocator.Create<IAuthService>(named);
-                var isUserExist = authService.IsValidUser(login, pass);//await userService.CheckLoginUser(login, pass);
+                var isUserExist = await authService.IsValidUser(login, pass);//await userService.CheckLoginUser(login, pass);
                 if (isUserExist)
                 {
                     MainFormService.ShowAppView(

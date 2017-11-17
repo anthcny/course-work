@@ -15,11 +15,11 @@ namespace CourseWork.Services
         const string SERVICE_LOGIN = @"HOME\Administrator";
         const string SERVICE_PASS = "!QAZxsw2123";
 
-        public bool IsValidUser(string login, string password)
+        public Task<bool> IsValidUser(string login, string password)
         {
             using (var context = new PrincipalContext(ContextType.Domain, DOMAIN, SERVICE_LOGIN, SERVICE_PASS))
             {
-                return context.ValidateCredentials(login, password);
+                return Task.FromResult(context.ValidateCredentials(login, password));
             }
         }
     }

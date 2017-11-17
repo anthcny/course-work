@@ -8,6 +8,6 @@ namespace CourseWork.Services.Contracts
 {
     public interface IAuthService
     {
-        bool IsValidUser(string login, string password);
+        Task<bool> IsValidUser(string login, string password);
     }
 }

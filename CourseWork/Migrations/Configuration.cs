@@ -21,7 +21,9 @@ namespace CourseWork.Migrations
                 new User
                 {
                     Login = "root",
-                    Password = CryptoService.Get().GetMd5Hash("root")
+                    Password = CryptoService.Get().GetMd5Hash("root"),
+                    CreatedAt = DateTime.Now,
+                    Name = "Admin"
                 }
             );
         }
